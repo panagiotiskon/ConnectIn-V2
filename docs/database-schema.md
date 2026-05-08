@@ -1,4 +1,4 @@
-# Connect-In Database Schema
+# ConnectIn Database Schema
 
 MySQL 8.x schema managed by Flyway (`src/main/resources/db/migration/`, V1–V22). Below are the effective table definitions after all migrations have been applied.
 

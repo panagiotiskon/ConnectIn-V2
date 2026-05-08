@@ -47,7 +47,7 @@ const RecommendationsInfoModal = ({ show, onHide }) => (
 
       <h3 className="reco-modal__section-heading">The Idea Behind It</h3>
       <p className="reco-modal__text">
-        Connect-In uses a technique called{' '}
+        ConnectIn uses a technique called
         <strong>Matrix Factorisation</strong>. Imagine a giant table where rows
         are users and columns are posts or jobs. Each cell represents how much a
         user would value that item. Most cells are blank — you have not seen

@@ -1,4 +1,4 @@
-# Connect-In API Specification
+# ConnectIn API Specification
 
 This document enumerates every REST endpoint exposed by the Spring Boot backend. Endpoints are grouped by controller (`back/src/main/java/backend/connectin/web/controllers/`).
 

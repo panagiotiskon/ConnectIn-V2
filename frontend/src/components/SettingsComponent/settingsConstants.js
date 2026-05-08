@@ -17,7 +17,7 @@ export const SETTINGS_CARDS = [
     type: 'recommendations-info',
     icon: '✨',
     title: 'Top Recommendations',
-    desc: 'Learn how Connect-In personalises your Top posts and jobs using your skills, connections, and activity.',
+    desc: 'Learn how ConnectIn personalises your Top posts and jobs using your skills, connections, and activity.',
     btnLabel: 'Learn More',
   },
 ];

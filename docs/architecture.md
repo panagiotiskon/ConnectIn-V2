@@ -1,7 +1,7 @@
-# High-Level Architecture: Connect-In
+# High-Level Architecture: ConnectIn
 
 ## 1. System Overview
-Connect-In is a professional social networking platform designed to facilitate user connections, content sharing, job applications, and ML-driven recommendations. It follows a two-tier architecture comprising a React SPA and a Spring Boot REST API.
+ConnectIn is a professional social networking platform designed to facilitate user connections, content sharing, job applications, and ML-driven recommendations. It follows a two-tier architecture comprising a React SPA and a Spring Boot REST API.
 
 ## 2. Technology Stack
 - **Frontend:** React (SPA), Axios, Context API.
