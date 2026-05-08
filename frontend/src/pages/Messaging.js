@@ -1,5 +1,4 @@
-import MessagingComponent from "../components/MessagingComponent/MessagingComponent";
-
-export default function Chat() {
-  return <MessagingComponent />;
+import Messaging from "../components/Messaging/Messaging";
+export default function MessagingPage() {
+  return <Messaging />;
 }

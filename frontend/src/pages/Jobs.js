@@ -1,9 +1,9 @@
 import React from "react";
-import JobsComponent from "../components/JobsComponent/JobsComponent";
-export default function Admin() {
+import Jobs from "../components/Jobs/Jobs";
+export default function JobsPage() {
   return (
     <div className="page-layout">
-      <JobsComponent />
+      <Jobs />
     </div>
   );
 }

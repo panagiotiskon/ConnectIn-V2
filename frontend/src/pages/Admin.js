@@ -1,7 +1,5 @@
 import React from "react";
-import AdminComponent from "../components/AdminComponent/AdminComponent";
-export default function Admin() {
-  return (
-  <AdminComponent />
-  );
+import Admin from "../components/Admin/Admin";
+export default function AdminPage() {
+  return <Admin />;
 }

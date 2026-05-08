@@ -3,7 +3,7 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 import OptimizedImage from '../common/OptimizedImage';
 import './NetworkUserCards.scss';
 
-const PendingUsersCardComponent = ({
+const PendingUserCard = ({
   user,
   onShowProfile,
   onDeletePending,
@@ -61,4 +61,4 @@ const PendingUsersCardComponent = ({
   );
 };
 
-export default PendingUsersCardComponent;
+export default PendingUserCard;

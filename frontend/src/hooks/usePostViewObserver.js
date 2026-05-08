@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import PostService from '../api/PostApi';
+import PostService from '../api/PostAPI';
 
 const OBSERVER_OPTIONS = { root: null, rootMargin: '0px', threshold: 0.5 };
 

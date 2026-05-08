@@ -1,9 +1,9 @@
 import React from "react";
-import SettingsComponent from "../components/SettingsComponent/SettingsComponent";
-export default function Register() {
+import Settings from "../components/Settings/Settings";
+export default function SettingsPage() {
   return (
     <div className="page-layout">
-      <SettingsComponent />
+      <Settings />
     </div>
   );
 }

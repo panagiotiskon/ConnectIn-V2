@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminAPI from '../../api/AdminAPI';
-import NavBarAdminComponent from './NavBarAdminComponent';
+import NavBarAdmin from './NavBarAdmin';
 import { MDBContainer, MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 import AdminUserCard from './AdminUserCard';
 import Spinner from '../common/Spinner';
 import SearchInput from '../common/SearchInput';
 
-import './AdminComponent.scss';
+import './Admin.scss';
 
 const PAGE_SIZE = 5;
 const DEBOUNCE_DELAY = 300;
 
-export default function AdminComponent() {
+export default function Admin() {
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,7 +84,7 @@ export default function AdminComponent() {
       const content =
         format === 'json'
           ? JSON.stringify(userDetails, null, 2)
-          : await import('./xmlConverter').then((m) => m.convertToXML(userDetails));
+          : await import('../../utils/xmlConverter').then((m) => m.convertToXML(userDetails));
 
       downloadFile(fileName, content, mimeType);
     } catch (error) {
@@ -119,7 +119,7 @@ export default function AdminComponent() {
 
   return (
     <div className="page-layout">
-      <NavBarAdminComponent />
+      <NavBarAdmin />
       <MDBContainer fluid className="py-5">
         <div className="center-content">
           <h4 className="section-heading">Extract Selected Users</h4>

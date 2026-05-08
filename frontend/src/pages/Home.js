@@ -1,9 +1,9 @@
 import React from "react";
-import HomeComponent from "../components/HomeComponent/HomeComponent";
-export default function Home() {
+import Home from "../components/Home/Home";
+export default function HomePage() {
   return (
     <div className="page-layout">
-      <HomeComponent />
+      <Home />
     </div>
   );
 }

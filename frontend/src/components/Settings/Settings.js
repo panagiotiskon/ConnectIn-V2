@@ -7,10 +7,10 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import SettingsModal from './SettingsModal';
 import RecommendationsInfoModal from './RecommendationsInfoModal';
-import { SETTINGS_CARDS } from './settingsConstants';
-import './SettingsComponent.scss';
+import { SETTINGS_CARDS } from '../../utils/settingsConstants';
+import './Settings.scss';
 
-export default function SettingsComponent() {
+export default function Settings() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 

@@ -1,15 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ViewProfileComponent from "../components/ViewProfileComponent/ViewProfileComponent";
+import ViewProfile from "../components/ViewProfile/ViewProfile";
 
-const ViewProfile = () => {
-  const { userId } = useParams(); // Get userId from URL
-
+const ViewProfilePage = () => {
+  const { userId } = useParams();
   return (
     <div className="page-layout">
-      <ViewProfileComponent userId={userId} />
+      <ViewProfile userId={userId} />
     </div>
   );
 };
 
-export default ViewProfile;
+export default ViewProfilePage;

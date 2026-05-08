@@ -4,16 +4,16 @@ import { Toast } from 'react-bootstrap';
 import NavbarComponent from '../common/NavBar';
 import ProfileCard from '../common/ProfileCard';
 import { useAuth } from '../../context/AuthContext';
-import PersonalInfoService from '../../api/UserPersonalInformationAPI';
-import './ProfileComponent.scss';
+import PersonalInfoService from '../../api/UserAPI';
+import './Profile.scss';
 import AddEditModal from './AddEditModal';
-import useProfileForm from './useProfileForm';
+import useProfileForm from '../../hooks/useProfileForm';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 import WorkExperienceSection from './WorkExperienceSection';
 import EducationSection from './EducationSection';
 import SkillsSection from './SkillsSection';
 
-const ProfileComponent = () => {
+const Profile = () => {
   const { user: currentUser } = useAuth();
   const {
     showModal,
@@ -299,4 +299,4 @@ const ProfileComponent = () => {
   );
 };
 
-export default ProfileComponent;
+export default Profile;

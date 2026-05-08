@@ -1,9 +1,9 @@
 import React from "react";
-import ProfileComponent from "../components/ProfileComponent/ProfileComponent";
-export default function Profile() {
+import Profile from "../components/Profile/Profile";
+export default function ProfilePage() {
   return (
     <div className="page-layout">
-      <ProfileComponent />
+      <Profile />
     </div>
   );
 }

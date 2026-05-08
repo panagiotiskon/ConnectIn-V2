@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import FileService from '../api/UserFilesApi';
+import FileService from '../api/UserFilesAPI';
 
 const fetchProfileImage = async (userId) => {
   const images = await FileService.getUserImages(userId);

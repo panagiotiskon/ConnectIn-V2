@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { useParams, useNavigate } from 'react-router-dom';
-import NavbarAdminComponent from '../AdminComponent/NavBarAdminComponent';
+import NavBarAdmin from '../Admin/NavBarAdmin';
 import ProfileCard from '../common/ProfileCard';
-import PersonalInfoService from '../../api/UserPersonalInformationAPI';
+import PersonalInfoService from '../../api/UserAPI';
 import { useAuth } from '../../context/AuthContext';
 import NavbarComponent from '../common/NavBar';
 import ConnectInLogo from '../../assets/ConnectIn.png';
 import '../../routes/ProtectedRoute.scss';
-import './ViewProfileComponent.scss';
+import './ViewProfile.scss';
 
-const ViewProfileComponent = () => {
+const ViewProfile = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [cardsContent, setCardsContent] = useState({
@@ -85,7 +85,7 @@ const ViewProfileComponent = () => {
   }
   return (
     <div>
-      {isAdmin ? <NavbarAdminComponent /> : <NavbarComponent />}
+      {isAdmin ? <NavBarAdmin /> : <NavbarComponent />}
 
       <MDBContainer fluid className="profile-page">
         <MDBRow>
@@ -222,4 +222,4 @@ const ViewProfileComponent = () => {
   );
 };
 
-export default ViewProfileComponent;
+export default ViewProfile;

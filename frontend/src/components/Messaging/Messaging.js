@@ -11,9 +11,9 @@ import useConversations from '../../hooks/useConversations';
 import useChatThread from '../../hooks/useChatThread';
 import { useAuth } from '../../context/AuthContext';
 import { filterUsersByName } from '../../utils/messagingUtils';
-import './MessagingComponent.scss';
+import './Messaging.scss';
 
-const MessagingComponent = () => {
+const Messaging = () => {
   const { user: currentUser } = useAuth();
   const userId = currentUser?.id;
   const { state } = useLocation();
@@ -127,4 +127,4 @@ const MessagingComponent = () => {
   );
 };
 
-export default MessagingComponent;
+export default Messaging;

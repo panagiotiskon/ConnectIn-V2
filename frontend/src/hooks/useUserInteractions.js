@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import PostService from '../api/PostApi';
+import PostService from '../api/PostAPI';
 
 const useUserInteractions = (userId) => {
   const [reactedPostIds, setReactedPostIds] = useState([]);

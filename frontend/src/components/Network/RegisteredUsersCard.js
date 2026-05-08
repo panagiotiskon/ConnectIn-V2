@@ -1,25 +1,13 @@
 import { MDBIcon } from 'mdb-react-ui-kit';
 import OptimizedImage from '../common/OptimizedImage';
+import Spinner from '../common/Spinner';
 import './NetworkUserCards.scss';
 
-const ConnectedUsersCardComponent = ({
-  user,
-  onShowProfile,
-  onMessage,
-  onDelete,
-}) => {
+const RegisteredUsersCard = ({ user, onConnect, onShowProfile, isConnecting = false }) => {
   const { firstName, lastName, profileImage = '', job, companyName } = user;
 
   return (
     <div className="modal-shell user-card">
-      <button
-        className="user-card__delete-btn"
-        onClick={onDelete}
-        title="Remove connection"
-      >
-        <MDBIcon fas icon="times" />
-      </button>
-
       <div className="user-card__banner" />
 
       <div className="user-card__body">
@@ -49,11 +37,21 @@ const ConnectedUsersCardComponent = ({
             <span>View Profile</span>
           </button>
           <button
-            className="user-card__action-btn user-card__action-btn--secondary"
-            onClick={onMessage}
+            className="user-card__action-btn user-card__action-btn--success"
+            onClick={onConnect}
+            disabled={isConnecting}
           >
-            <MDBIcon fas icon="envelope" />
-            <span>Message</span>
+            {isConnecting ? (
+              <>
+                <Spinner />
+                <span>Connecting…</span>
+              </>
+            ) : (
+              <>
+                <MDBIcon fas icon="user-plus" />
+                <span>Connect</span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -61,4 +59,4 @@ const ConnectedUsersCardComponent = ({
   );
 };
 
-export default ConnectedUsersCardComponent;
+export default RegisteredUsersCard;

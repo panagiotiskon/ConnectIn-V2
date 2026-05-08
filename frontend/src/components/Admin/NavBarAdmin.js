@@ -13,7 +13,7 @@ import {
 import ConnectInLogo from '../../assets/ConnectIn.png';
 import { useAuth } from '../../context/AuthContext';
 
-const NavBarAdminComponent = () => {
+const NavBarAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openNavSecond, setOpenNavSecond] = useState(false);
@@ -102,4 +102,4 @@ const NavBarAdminComponent = () => {
   );
 };
 
-export default NavBarAdminComponent;
+export default NavBarAdmin;

@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import JobCard, { groupApplicationsByJob } from './JobCard';
 import ApplicantRow from './ApplicantRow';
 import DeleteButton from './DeleteButton';
-import './JobsComponent.scss';
+import './Jobs.scss';
 
 const DELETE_JOB = 'delete-job';
 const WITHDRAW_APPLICATION = 'withdraw-application';
@@ -31,7 +31,7 @@ const CONFIRM_COPY = {
   },
 };
 
-const JobsComponent = () => {
+const Jobs = () => {
   const [myJobs, setMyJobs] = useState([]);
   const [topPicks, setTopPicks] = useState([]);
   const [applications, setApplications] = useState({});
@@ -350,4 +350,4 @@ const JobsComponent = () => {
   );
 };
 
-export default JobsComponent;
+export default Jobs;

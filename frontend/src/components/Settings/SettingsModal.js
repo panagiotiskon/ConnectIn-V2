@@ -1,6 +1,6 @@
 import { Modal, Form, Alert } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { SETTINGS_CONFIGS } from './settingsConstants';
+import { SETTINGS_CONFIGS } from '../../utils/settingsConstants';
 
 const SettingsModal = ({ show, onHide, onSubmit, loading, error, type }) => {
   const {

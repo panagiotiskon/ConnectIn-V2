@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import PostService from '../api/PostApi';
+import PostService from '../api/PostAPI';
 import { processPost } from '../utils/postUtils';
 
 const PAGE_SIZE = 10;

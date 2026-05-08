@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
 import ConnectInLogo from '../../assets/ConnectIn.png';
 import PhotoUpload from './PhotoUpload';
-import FooterComponent from '../common/FooterComponent';
-import './RegisterComponent.scss';
+import Footer from '../common/Footer';
+import './Register.scss';
 
 const Required = () => <span className="required-mark">*</span>;
 
-const RegisterComponent = () => {
+const Register = () => {
   const {
     register: formRegister,
     handleSubmit,
@@ -265,9 +265,9 @@ const RegisterComponent = () => {
           </p>
         </div>
       </div>
-      <FooterComponent />
+      <Footer />
     </div>
   );
 };
 
-export default RegisterComponent;
+export default Register;

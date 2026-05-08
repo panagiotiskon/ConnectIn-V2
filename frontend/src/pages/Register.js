@@ -1,9 +1,9 @@
 import React from "react";
-import RegisterComponent from "../components/RegisterComponent/RegisterComponent";
-export default function Register() {
+import Register from "../components/Register/Register";
+export default function RegisterPage() {
   return (
     <div className="page-layout">
-      <RegisterComponent />
+      <Register />
     </div>
   );
 }

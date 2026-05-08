@@ -1,9 +1,9 @@
 import React from "react";
-import NotificationComponent from "../components/NotificationsComponent/NotificationComponent";
-export default function Profile() {
+import Notification from "../components/Notifications/Notification";
+export default function NotificationsPage() {
   return (
     <div className="page-layout">
-      <NotificationComponent />
+      <Notification />
     </div>
   );
 }

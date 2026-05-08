@@ -1,10 +1,9 @@
 import React from "react";
-import NotFoundComponent from "../components/NotFoundComponent/NotFoundComponent";
-
-export default function NotFound() {
+import NotFound from "../components/NotFound/NotFound";
+export default function NotFoundPage() {
   return (
     <div className="page-layout">
-      <NotFoundComponent />
+      <NotFound />
     </div>
   );
 }

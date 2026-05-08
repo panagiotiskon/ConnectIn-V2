@@ -1,9 +1,9 @@
 import React from "react";
-import NetworkComponent from "../components/NetworkComponent/NetworkComponent";
-export default function Network() {
+import Network from "../components/Network/Network";
+export default function NetworkPage() {
   return (
     <div className="page-layout">
-      <NetworkComponent />
+      <Network />
     </div>
   );
 }

@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { MDBSpinner } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
-import './LoginComponent.scss';
+import './Login.scss';
 import { useAuth } from '../../context/AuthContext';
 import { useForm } from 'react-hook-form';
 import ConnectInLogo from '../../assets/ConnectIn.png';
-import FooterComponent from '../common/FooterComponent';
+import Footer from '../common/Footer';
 
-const LoginComponent = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
@@ -124,9 +124,9 @@ const LoginComponent = () => {
           </p>
         </div>
       </div>
-      <FooterComponent />
+      <Footer />
     </div>
   );
 };
 
-export default LoginComponent;
+export default Login;

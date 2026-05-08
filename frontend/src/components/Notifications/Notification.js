@@ -5,9 +5,9 @@ import { useAuth } from '../../context/AuthContext';
 import NotificationAPI from '../../api/NotificationAPI';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import Spinner from '../common/Spinner';
-import './NotificationsComponent.scss';
+import './Notifications.scss';
 
-export default function NotificationComponent() {
+export default function Notification() {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user: currentUser, decrementNotificationCount } = useAuth();

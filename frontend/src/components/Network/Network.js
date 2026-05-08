@@ -1,21 +1,21 @@
 import { useCallback, useState } from 'react';
 import { MDBContainer } from 'mdb-react-ui-kit';
 import NavbarComponent from '../common/NavBar';
-import ConnectedUsersCardComponent from './ConnectedUsersCardComponent';
-import RegisteredUsersCardComponent from './RegisteredUsersCardComponent';
+import ConnectedUsersCard from './ConnectedUsersCard';
+import RegisteredUsersCard from './RegisteredUsersCard';
 import { MDBSpinner } from 'mdb-react-ui-kit';
 import ConnectionAPI from '../../api/ConnectionAPI';
 import NotificationAPI from '../../api/NotificationAPI';
 import { useAuth } from '../../context/AuthContext';
 import MessagingAPI from '../../api/MessagingAPI';
 import { useNavigate } from 'react-router-dom';
-import PendingUsersCardComponent from './PendingUserCardComponent';
+import PendingUserCard from './PendingUserCard';
 import { useSearchUsers } from '../../hooks/useSearchUsers';
 import ConfirmActionModal from '../common/ConfirmActionModal';
 import SearchInput from '../common/SearchInput';
-import './NetworkComponent.scss';
+import './Network.scss';
 
-const NetworkComponent = () => {
+const Network = () => {
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
   const currentUserId = currentUser?.id;
@@ -220,20 +220,20 @@ const NetworkComponent = () => {
               return (
                 <div key={user.userId} className="card-network">
                   {status === 'ACCEPTED' ? (
-                    <ConnectedUsersCardComponent
+                    <ConnectedUsersCard
                       user={cardUser}
                       onMessage={() => handleMessage(user.userId)}
                       onShowProfile={() => handleShowProfile(user.userId)}
                       onDelete={() => openDeleteModal(user.userId)}
                     />
                   ) : status === 'PENDING' ? (
-                    <PendingUsersCardComponent
+                    <PendingUserCard
                       user={cardUser}
                       onShowProfile={() => handleShowProfile(user.userId)}
                       onDeletePending={() => openPendingDeleteModal(user.userId)}
                     />
                   ) : (
-                    <RegisteredUsersCardComponent
+                    <RegisteredUsersCard
                       user={cardUser}
                       isConnecting={connectingIds.has(user.userId)}
                       onConnect={() => handleConnect(user.userId)}
@@ -289,4 +289,4 @@ const NetworkComponent = () => {
   );
 };
 
-export default NetworkComponent;
+export default Network;

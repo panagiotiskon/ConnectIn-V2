@@ -9,7 +9,7 @@ import SortingCard from '../common/SortingCard';
 import PostCard from './PostCard';
 import SkeletonCard from '../common/SkeletonCard';
 import { useAuth } from '../../context/AuthContext';
-import PostService from '../../api/PostApi';
+import PostService from '../../api/PostAPI';
 import NotificationAPI from '../../api/NotificationAPI';
 import useProfileImage from '../../hooks/useProfileImage';
 import useFeed from '../../hooks/useFeed';
@@ -17,9 +17,9 @@ import useUserInteractions from '../../hooks/useUserInteractions';
 import usePostViewObserver from '../../hooks/usePostViewObserver';
 import useEventCallback from '../../hooks/useEventCallback';
 import { MAX_UPLOAD_LABEL } from '../../utils/uploadConstraints';
-import './HomeComponent.scss';
+import './Home.scss';
 
-const HomeComponent = () => {
+const Home = () => {
   const { user: currentUser } = useAuth();
   const userId = currentUser?.id;
   const { profileImage } = useProfileImage(userId);
@@ -368,4 +368,4 @@ const HomeComponent = () => {
   );
 };
 
-export default HomeComponent;
+export default Home;

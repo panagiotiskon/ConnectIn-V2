@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ConnectInLogo from "../../assets/ConnectIn.png";
-import FooterComponent from "../common/FooterComponent";
-import "./NotFoundComponent.scss";
+import Footer from "../common/Footer";
+import "./NotFound.scss";
 
-const NotFoundComponent = () => {
+const NotFound = () => {
   const navigate = useNavigate();
 
   return (
@@ -27,9 +27,9 @@ const NotFoundComponent = () => {
           Go Home
         </button>
       </div>
-      <FooterComponent />
+      <Footer />
     </div>
   );
 };
 
-export default NotFoundComponent;
+export default NotFound;
