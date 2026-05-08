@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Claude ###
-*.skill.md
+.claude/
