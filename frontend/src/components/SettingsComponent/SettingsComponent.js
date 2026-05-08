@@ -49,7 +49,7 @@ export default function SettingsComponent() {
       setShowToast(true);
       setTimeout(async () => {
         await logout();
-        navigate('/');
+        navigate('/login');
       }, 2500);
     } catch {
       setError(

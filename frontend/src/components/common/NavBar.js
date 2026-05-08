@@ -21,7 +21,7 @@ const NavbarComponent = () => {
   const isActivePage = (path) => location.pathname === path;
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate('/login');
   };
 
   const navItems = [

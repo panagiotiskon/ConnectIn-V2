@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Define paths where you don't want the automatic fetch to trigger
-    const authPaths = ['/', '/register'];
+    const authPaths = ['/login', '/register'];
     const currentPath = window.location.pathname;
 
     if (authPaths.some((path) => currentPath.endsWith(path))) {

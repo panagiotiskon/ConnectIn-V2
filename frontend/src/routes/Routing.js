@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
@@ -13,7 +13,9 @@ import NotFound from "../pages/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import Jobs from "../pages/Jobs";
 import ViewProfile from "../pages/ViewProfile";
-import { AuthProvider } from "../context/AuthContext";
+import { AuthProvider, useAuth } from "../context/AuthContext";
+import ConnectInLogo from "../assets/ConnectIn.png";
+import "./ProtectedRoute.scss";
 
 function AuthLayout() {
   return (
@@ -23,6 +25,28 @@ function AuthLayout() {
   );
 }
 
+function RootRedirect() {
+  const { user, isAuthenticated, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center protected-route-loader">
+        <img
+          src={ConnectInLogo}
+          alt="ConnectIn Logo"
+          className="pulsing-logo"
+        />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Navigate to={user?.role === "ROLE_ADMIN" ? "/admin" : "/home"} replace />;
+}
+
 export const router = createBrowserRouter([
   {
     element: <AuthLayout />,
@@ -30,6 +54,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <RootRedirect />,
+      },
+      {
+        path: "/login",
         element: <Login />,
       },
       {

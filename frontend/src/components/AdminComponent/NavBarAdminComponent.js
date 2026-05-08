@@ -23,7 +23,7 @@ const NavBarAdminComponent = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate('/login');
   };
 
   const handleGoBack = () => {

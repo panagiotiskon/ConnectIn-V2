@@ -253,7 +253,7 @@ const RegisterComponent = () => {
         <div
           className="text-center"
           onClick={() => {
-            navigate('/');
+            navigate('/login');
             window.location.reload();
           }}
         >
