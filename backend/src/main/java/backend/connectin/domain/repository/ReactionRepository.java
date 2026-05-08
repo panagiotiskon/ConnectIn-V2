@@ -15,6 +15,12 @@ public interface ReactionRepository extends JpaRepository<Reaction, Long> {
     List<Reaction> findAllByUserId(Long userId);
     List<Reaction> findAllByUserIdIn(List<Long> userIds);
 
+    @Query("SELECT r FROM Reaction r JOIN FETCH r.post WHERE r.user.id = :userId")
+    List<Reaction> findAllByUserIdFetchPost(@Param("userId") Long userId);
+
+    @Query("SELECT r FROM Reaction r JOIN FETCH r.post WHERE r.user.id IN :userIds")
+    List<Reaction> findAllByUserIdInFetchPost(@Param("userIds") List<Long> userIds);
+
     @Query(value = """
             SELECT r.*
             FROM reactions r

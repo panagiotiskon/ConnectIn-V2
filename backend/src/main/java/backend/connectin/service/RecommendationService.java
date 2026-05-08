@@ -171,6 +171,13 @@ public class RecommendationService {
             return;
         }
         try {
+            readOnlyTransactionTemplate.executeWithoutResult(status -> trainAndSaveJobRecommendations());
+        } finally {
+            jobsTrainingInFlight.set(false);
+        }
+    }
+
+    private void trainAndSaveJobRecommendations() {
         List<User> users = userService.fetchAll();
         List<JobPost> jobPosts = jobPostRepository.findAll();
 
@@ -211,9 +218,6 @@ public class RecommendationService {
         MatrixFactorization matrixFactorization = new MatrixFactorization(matrix, 16, 0.0001, 0.05, 6500);
         double[][] results = matrixFactorization.trainAndPredict();
         saveJobRecommendations(users, jobPosts, results, usersWithSignal);
-        } finally {
-            jobsTrainingInFlight.set(false);
-        }
     }
 
     public void recommendPosts() {
@@ -247,7 +251,7 @@ public class RecommendationService {
             List<Post> postsFromReactions = postRepository.findPostsByIdIn(postIdsFromReactions);
             connectionIds.add(user.getId());
             connectionIds = new ArrayList<>(new HashSet<>(connectionIds));
-            List<Reaction> userReactions = reactionRepository.findAllByUserId(user.getId());
+            List<Reaction> userReactions = reactionRepository.findAllByUserIdFetchPost(user.getId());
             List<PostView> postViews = postViewRepository.findByUserId(user.getId());
 
             // Fix 4: bulk-fetch all connection reactions once instead of one query per connection
@@ -255,7 +259,7 @@ public class RecommendationService {
                     .filter(id -> !Objects.equals(id, user.getId())).toList();
             List<Reaction> allConnectionReactions = connectionIdsWithoutSelf.isEmpty()
                     ? List.of()
-                    : reactionRepository.findAllByUserIdIn(connectionIdsWithoutSelf);
+                    : reactionRepository.findAllByUserIdInFetchPost(connectionIdsWithoutSelf);
 
             // Fix 4 (post-view path): bulk-fetch viewed posts once instead of per-id inside stream
             List<Long> viewedPostIds = postViews.stream().map(PostView::getPostId).toList();

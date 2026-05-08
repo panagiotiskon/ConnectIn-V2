@@ -101,23 +101,28 @@ public class JobService {
 
     public List<JobApplicationDTO> getJobApplications(long userId){
         userService.findUserOrThrow(userId);
-        List<Long> jobPosts = jobPostRepository.findJobPostByUserId(userId).stream().map(JobPost::getId).toList();
-        if(jobPosts.isEmpty()){
+        List<Long> jobPostIds = jobPostRepository.findJobPostByUserId(userId).stream().map(JobPost::getId).toList();
+        if(jobPostIds.isEmpty()){
             return List.of();
         }
-        List<JobApplicationDTO> jobApplicationDTOS = new ArrayList<>();
-        for(var jobPost:jobPosts){
-            List<JobApplication> jobApplications = jobApplicationRepository.findJobApplicationByJobPostId(jobPost);
-            if(jobApplications.isEmpty()){
+
+        List<JobApplication> applications = jobApplicationRepository.findByJobPostIdIn(jobPostIds);
+        if(applications.isEmpty()){
+            return List.of();
+        }
+
+        List<Long> applicantIds = applications.stream().map(JobApplication::getUserId).distinct().toList();
+        Map<Long, User> applicantsById = userRepository.findAllById(applicantIds).stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+
+        List<JobApplicationDTO> jobApplicationDTOS = new ArrayList<>(applications.size());
+        for (JobApplication application : applications) {
+            User applicant = applicantsById.get(application.getUserId());
+            if (applicant == null) {
                 continue;
             }
-            for(JobApplication jobApplication:jobApplications){
-                User user = userService.findUserOrThrow(jobApplication.getUserId());
-                String fullName = user.getFirstName() + " " + user.getLastName();
-                JobApplicationDTO jobApplicationDTO = new JobApplicationDTO(user.getId(),jobApplication.getJobPostId(),fullName);
-                jobApplicationDTOS.add(jobApplicationDTO);
-
-            }
+            String fullName = applicant.getFirstName() + " " + applicant.getLastName();
+            jobApplicationDTOS.add(new JobApplicationDTO(applicant.getId(), application.getJobPostId(), fullName));
         }
 
         return jobApplicationDTOS;
