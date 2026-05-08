@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import ConnectionAPI from '../api/ConnectionAPI';
 
-export const SEARCH_PAGE_SIZE = 2;
+export const SEARCH_PAGE_SIZE = 4;
 
 // Array keys are used instead of pipe-delimited strings to avoid collisions
 // when userId or searchTerm contain the '|' character.
