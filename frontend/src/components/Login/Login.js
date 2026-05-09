@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { useAuth } from '../../context/AuthContext';
 import { useForm } from 'react-hook-form';
-import ConnectInLogo from '../../assets/ConnectIn.png';
 import Footer from '../common/Footer';
 
 const Login = () => {
@@ -53,7 +52,7 @@ const Login = () => {
   return (
     <div className="login-wrapper">
       <img
-        src={ConnectInLogo}
+        src="/connectin-logo.png"
         alt="ConnectIn Logo"
         className="connectInLogo"
         fetchpriority="high"

@@ -4,7 +4,6 @@ import { MDBSpinner } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
-import ConnectInLogo from '../../assets/ConnectIn.png';
 import PhotoUpload from './PhotoUpload';
 import Footer from '../common/Footer';
 import './Register.scss';
@@ -71,7 +70,7 @@ const Register = () => {
   return (
     <div className="register-wrapper">
       <img
-        src={ConnectInLogo}
+        src="/connectin-logo.png"
         alt="ConnectIn Logo"
         className="connectInLogo"
         fetchpriority="high"

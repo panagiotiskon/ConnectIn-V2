@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ConnectInLogo from "../../assets/ConnectIn.png";
 import Footer from "../common/Footer";
 import "./NotFound.scss";
 
@@ -10,7 +9,7 @@ const NotFound = () => {
   return (
     <div className="not-found-wrapper">
       <img
-        src={ConnectInLogo}
+        src="/connectin-logo.png"
         alt="ConnectIn Logo"
         className="connectInLogo"
         fetchpriority="high"

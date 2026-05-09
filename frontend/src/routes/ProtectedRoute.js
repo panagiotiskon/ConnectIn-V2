@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import ConnectInLogo from '../assets/ConnectIn.png';
 import './ProtectedRoute.scss';
 
 const ProtectedRoute = ({ element: Element, allowedRoles, ...rest }) => {
@@ -10,7 +9,7 @@ const ProtectedRoute = ({ element: Element, allowedRoles, ...rest }) => {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center protected-route-loader">
         <img
-          src={ConnectInLogo}
+          src="/connectin-logo.png"
           alt="ConnectIn Logo"
           className="pulsing-logo"
         />

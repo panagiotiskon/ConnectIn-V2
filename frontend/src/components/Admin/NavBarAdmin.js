@@ -10,7 +10,6 @@ import {
   MDBContainer,
   MDBNavbarToggler,
 } from 'mdb-react-ui-kit';
-import ConnectInLogo from '../../assets/ConnectIn.png';
 import { useAuth } from '../../context/AuthContext';
 
 const NavBarAdmin = () => {
@@ -36,7 +35,7 @@ const NavBarAdmin = () => {
       <MDBContainer className="navbar-container w-100">
         <div className="d-flex align-items-center justify-content-between w-100">
           <img
-            src={ConnectInLogo}
+            src="/connectin-logo.png"
             alt="ConnectIn Logo"
             className="navbar-logo"
             onClick={() => navigate('/admin')}

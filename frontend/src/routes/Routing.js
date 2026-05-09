@@ -14,7 +14,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import Jobs from "../pages/Jobs";
 import ViewProfile from "../pages/ViewProfile";
 import { AuthProvider, useAuth } from "../context/AuthContext";
-import ConnectInLogo from "../assets/ConnectIn.png";
 import "./ProtectedRoute.scss";
 
 function AuthLayout() {
@@ -32,7 +31,7 @@ function RootRedirect() {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center protected-route-loader">
         <img
-          src={ConnectInLogo}
+          src="/connectin-logo.png"
           alt="ConnectIn Logo"
           className="pulsing-logo"
         />

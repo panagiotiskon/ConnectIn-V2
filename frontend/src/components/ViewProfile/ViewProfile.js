@@ -6,7 +6,6 @@ import ProfileCard from '../common/ProfileCard';
 import PersonalInfoService from '../../api/UserAPI';
 import { useAuth } from '../../context/AuthContext';
 import NavbarComponent from '../common/NavBar';
-import ConnectInLogo from '../../assets/ConnectIn.png';
 import '../../routes/ProtectedRoute.scss';
 import './ViewProfile.scss';
 
@@ -76,7 +75,7 @@ const ViewProfile = () => {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center protected-route-loader">
         <img
-          src={ConnectInLogo}
+          src="/connectin-logo.png"
           alt="ConnectIn Logo"
           className="pulsing-logo"
         />
