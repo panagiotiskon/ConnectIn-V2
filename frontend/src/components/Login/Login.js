@@ -110,9 +110,9 @@ const Login = () => {
 
         <div
           className="text-center"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             navigate('/register');
-            window.location.reload();
           }}
         >
           <p className="inner-footer-text">

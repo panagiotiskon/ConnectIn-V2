@@ -3,9 +3,10 @@ import { useDropzone } from "react-dropzone";
 import Popup from "reactjs-popup";
 import { MDBIcon } from "mdb-react-ui-kit";
 import "reactjs-popup/dist/index.css";
+import { validatePhoto } from "./utils/registerForm";
 import './PhotoUpload.scss';
 
-const PhotoUpload = ({ onFileUpload }) => {
+const PhotoUpload = ({ onFileUpload, onError }) => {
   const [previewUrl, setPreviewUrl] =
     useState(null);
   const [popupOpen, setPopupOpen] =
@@ -33,9 +34,15 @@ const PhotoUpload = ({ onFileUpload }) => {
   };
 
   const handleFile = (file) => {
+    const error = validatePhoto(file);
+    if (error) {
+      onError?.(error);
+      return;
+    }
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
     onFileUpload(file);
+    onError?.(null);
     setPopupOpen(true);
     setPopupContent(
       "File uploaded successfully!",
@@ -46,6 +53,7 @@ const PhotoUpload = ({ onFileUpload }) => {
   const handleRemovePhoto = () => {
     setPreviewUrl(null);
     onFileUpload(null);
+    onError?.(null);
   };
 
   const handlePopupClose = () => {
