@@ -7,6 +7,8 @@ import PostMedia from './PostMedia';
 import { COMMENT_CONTENT_MAX } from '../../utils/uploadConstraints';
 import './PostCard.scss';
 
+const COMMENTS_PREVIEW_COUNT = 2;
+
 const PostCard = ({
   post = {},
   currentUser,
@@ -21,6 +23,7 @@ const PostCard = ({
   onDeleteComment = () => {},
 }) => {
   const [pendingAction, setPendingAction] = useState(null);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const {
     id,
@@ -32,6 +35,16 @@ const PostCard = ({
     file,
     comments,
   } = post;
+  const totalComments = comments?.length || 0;
+  const sortedComments = comments
+    ? [...comments].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )
+    : [];
+  const visibleComments = showAllComments
+    ? sortedComments
+    : sortedComments.slice(0, COMMENTS_PREVIEW_COUNT);
+  const hiddenCount = totalComments - COMMENTS_PREVIEW_COUNT;
   const DELETE_POST = 'delete-post';
   const DELETE_COMMENT = 'delete-comment';
 
@@ -142,9 +155,9 @@ const PostCard = ({
         {commentError && <p className="comment-error">{commentError}</p>}
 
         {/* Comments list */}
-        {comments?.length > 0 && (
+        {totalComments > 0 && (
           <div className="comments-list">
-            {comments.map((comment) => {
+            {visibleComments.map((comment) => {
               const {
                 commentId,
                 userId: commenterId,
@@ -194,6 +207,17 @@ const PostCard = ({
                 </div>
               );
             })}
+            {hiddenCount > 0 && (
+              <button
+                type="button"
+                className="comments-show-more"
+                onClick={() => setShowAllComments((v) => !v)}
+              >
+                {showAllComments
+                  ? 'Show less'
+                  : `View ${hiddenCount} more ${hiddenCount === 1 ? 'comment' : 'comments'}`}
+              </button>
+            )}
           </div>
         )}
       </MDBCardBody>

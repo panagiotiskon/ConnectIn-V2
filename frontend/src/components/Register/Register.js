@@ -103,7 +103,7 @@ const Register = () => {
       />
       <div className="form-container">
         <h2 className="form-subheading">
-          Create your ConnectIn account
+          Create your account
         </h2>
 
         <div className="step-indicator" aria-hidden="true">

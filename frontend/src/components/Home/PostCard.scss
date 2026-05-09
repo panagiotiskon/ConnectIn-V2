@@ -328,6 +328,22 @@
   margin: 0.5rem 0 0;
 }
 
+.comments-show-more {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0.25rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $primary;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    transition: color 0.15s;
+  }
+}
+
 /* ── Mobile ── */
 @media (max-width: 480px) {
   .post-card-body {
