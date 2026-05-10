@@ -148,6 +148,11 @@
     color: #28a745;
     font-weight: 600;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 /* ── Comment input row ── */

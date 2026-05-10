@@ -13,6 +13,7 @@ const PostCard = ({
   post = {},
   currentUser,
   hasReacted = false,
+  isReacting = false,
   commentInput = '',
   commentError = null,
   userCommentIds,
@@ -128,6 +129,7 @@ const PostCard = ({
           <button
             className={`reaction-btn${hasReacted ? ' reacted' : ''}`}
             onClick={() => onReactionToggle(id)}
+            disabled={isReacting}
           >
             {hasReacted ? '👌🏻 Reacted' : '👆🏻 React'}
           </button>

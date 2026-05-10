@@ -54,6 +54,7 @@ const Home = () => {
   const [commentErrors, setCommentErrors] = useState({});
   const [postError, setPostError] = useState(null);
   const [submittingPost, setSubmittingPost] = useState(false);
+  const [reactingPostIds, setReactingPostIds] = useState(() => new Set());
   const [toast, setToast] = useState(null);
 
   const reactedPostIdsSet = useMemo(
@@ -214,9 +215,15 @@ const Home = () => {
   });
 
   const handleReactionToggle = useEventCallback(async (postId) => {
+    if (reactingPostIds.has(postId)) return;
     const hasReacted = reactedPostIds.includes(postId);
     const post = postsMap[postId];
 
+    setReactingPostIds((prev) => {
+      const next = new Set(prev);
+      next.add(postId);
+      return next;
+    });
     setReactedPostIds((prev) =>
       hasReacted ? prev.filter((id) => id !== postId) : [...prev, postId]
     );
@@ -243,6 +250,12 @@ const Home = () => {
       setReactedPostIds((prev) =>
         hasReacted ? [...prev, postId] : prev.filter((id) => id !== postId)
       );
+    } finally {
+      setReactingPostIds((prev) => {
+        const next = new Set(prev);
+        next.delete(postId);
+        return next;
+      });
     }
   });
 
@@ -319,6 +332,7 @@ const Home = () => {
                   post={post}
                   currentUser={currentUser}
                   hasReacted={reactedPostIdsSet.has(post.id)}
+                  isReacting={reactingPostIds.has(post.id)}
                   commentInput={commentInputs[post.id]}
                   commentError={commentErrors[post.id]}
                   userCommentIds={userComments[post.id]}
