@@ -1,3 +1,5 @@
+import ProfileLink from '../common/ProfileLink';
+
 export const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : '—');
 
 export const groupApplicationsByJob = (applications) => {
@@ -25,7 +27,11 @@ const JobCard = ({ job, showCreatedBy = false, badge, actions, children, ...prop
       <div className="jobs-entry-subtitle">{job.companyName}</div>
       <div className="jobs-entry-meta">
         {formatDate(job.createdAt)}
-        {showCreatedBy && <>{' · '}By {job.createdBy}</>}
+        {showCreatedBy && (
+          <>
+            {' · '}By <ProfileLink userId={job.userId}>{job.createdBy}</ProfileLink>
+          </>
+        )}
       </div>
       <div className="jobs-entry-description">{job.jobDescription}</div>
       {children}

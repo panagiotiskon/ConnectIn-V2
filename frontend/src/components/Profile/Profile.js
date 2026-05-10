@@ -237,7 +237,7 @@ const Profile = () => {
       <MDBContainer fluid className="profile-page">
         <MDBRow>
           <MDBCol md="4" className="mb-4 mb-md-0">
-            <ProfileCard currentUser={currentUser} />
+            <ProfileCard currentUser={currentUser} hideViewProfile />
           </MDBCol>
 
           <MDBCol md="8">

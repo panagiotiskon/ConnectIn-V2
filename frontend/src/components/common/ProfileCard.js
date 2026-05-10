@@ -4,7 +4,7 @@ import OptimizedImage from './OptimizedImage';
 import useProfileImage from '../../hooks/useProfileImage';
 import './ProfileCard.scss';
 
-const ProfileCard = ({ currentUser, isViewOnly = false }) => {
+const ProfileCard = ({ currentUser, isViewOnly = false, hideViewProfile = false }) => {
   const navigate = useNavigate();
   const { profileImage } = useProfileImage(currentUser?.id);
 
@@ -52,12 +52,14 @@ const ProfileCard = ({ currentUser, isViewOnly = false }) => {
               />
             </div>
 
-            <button
-              className="profile-card__cta"
-              onClick={() => navigate('/profile')}
-            >
-              View Profile
-            </button>
+            {!hideViewProfile && (
+              <button
+                className="profile-card__cta"
+                onClick={() => navigate('/profile')}
+              >
+                View Profile
+              </button>
+            )}
           </>
         )}
       </div>
