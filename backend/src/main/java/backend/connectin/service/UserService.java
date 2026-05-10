@@ -111,8 +111,9 @@ public class UserService {
         }
 
         // Best-effort: send pending connection requests from the launch-seed users.
-        // Gated by WELCOME_CONNECTIONS env var. The service defers the actual sends
-        // to afterCommit, so a failure there cannot roll back this transaction.
+        // Gated by WELCOME_CONNECTIONS env var. Each request runs in its own
+        // REQUIRES_NEW transaction inside the service, so a failure there cannot
+        // mark this registration transaction rollback-only.
         welcomeConnectionService.sendWelcomeRequests(user.getId());
     }
 

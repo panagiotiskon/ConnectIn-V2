@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Sends pending connection requests from each launch-seed user to a newly registered user,
@@ -25,52 +26,48 @@ public class WelcomeConnectionService {
 
     private final UserRepository userRepository;
     private final ConnectionService connectionService;
+    private final TransactionTemplate requiresNewTx;
     private final boolean enabled;
 
     public WelcomeConnectionService(UserRepository userRepository,
                                     @Lazy ConnectionService connectionService,
+                                    PlatformTransactionManager txManager,
                                     @Value("${app.seed.welcome.enabled:false}") boolean enabled) {
         this.userRepository = userRepository;
         this.connectionService = connectionService;
+        this.requiresNewTx = new TransactionTemplate(txManager);
+        this.requiresNewTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         this.enabled = enabled;
     }
 
     /**
-     * Best-effort: for each seed user that exists, send a pending connection request
-     * targeting the newly registered user.
+     * For each seed user that exists, send a pending connection request targeting the
+     * newly registered user.
      *
-     * When invoked inside an active transaction (e.g. from UserService.registerUser),
-     * the work is deferred to afterCommit so that any failure inside requestToConnect
-     * — which throws RuntimeException on conflict / not-found and would otherwise
-     * mark the outer transaction rollback-only — cannot affect the registration.
+     * Each request runs in its own REQUIRES_NEW transaction. The caller's transaction
+     * (e.g. UserService.registerUser) is suspended for the duration of each request
+     * and resumed afterwards, so a failure here can never mark the registration
+     * transaction rollback-only.
      */
     public void sendWelcomeRequests(long newUserId) {
         if (!enabled) {
             return;
         }
 
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
-                    doSendWelcomeRequests(newUserId);
-                }
-            });
-        } else {
-            doSendWelcomeRequests(newUserId);
-        }
-    }
-
-    private void doSendWelcomeRequests(long newUserId) {
         int sent = 0;
         for (String seedEmail : LaunchDataSeeder.SEED_USER_EMAILS) {
             try {
-                User seedUser = userRepository.findUserByEmail(seedEmail).orElse(null);
-                if (seedUser == null || seedUser.getId() == newUserId) {
-                    continue;
+                Boolean wrote = requiresNewTx.execute(status -> {
+                    User seedUser = userRepository.findUserByEmail(seedEmail).orElse(null);
+                    if (seedUser == null || seedUser.getId() == newUserId) {
+                        return Boolean.FALSE;
+                    }
+                    connectionService.requestToConnect(seedUser.getId(), newUserId);
+                    return Boolean.TRUE;
+                });
+                if (Boolean.TRUE.equals(wrote)) {
+                    sent++;
                 }
-                connectionService.requestToConnect(seedUser.getId(), newUserId);
-                sent++;
             } catch (Exception e) {
                 log.warn("[WelcomeConnectionService] Skipped welcome request from {} to user {}: {}",
                         seedEmail, newUserId, e.getMessage());
