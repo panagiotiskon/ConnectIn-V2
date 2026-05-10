@@ -42,6 +42,7 @@ public class UserService {
     private final PostService postService;
     private final PostMapper postMapper;
     private final ConnectionService connectionService;
+    private final WelcomeConnectionService welcomeConnectionService;
 
     public UserService(UserRepository userRepository,
                        FileRepository fileRepository,
@@ -55,7 +56,8 @@ public class UserService {
                        @Lazy CommentService commentService,
                        @Lazy PostService postService,
                        PostMapper postMapper,
-                       @Lazy ConnectionService connectionService) {
+                       @Lazy ConnectionService connectionService,
+                       @Lazy WelcomeConnectionService welcomeConnectionService) {
 
         this.userRepository = userRepository;
         this.fileRepository = fileRepository;
@@ -70,6 +72,7 @@ public class UserService {
         this.postService = postService;
         this.postMapper = postMapper;
         this.connectionService = connectionService;
+        this.welcomeConnectionService = welcomeConnectionService;
     }
 
     // Check if user with the given email already exists
@@ -107,6 +110,10 @@ public class UserService {
             }
         }
 
+        // Best-effort: send pending connection requests from the launch-seed users.
+        // Gated by WELCOME_CONNECTIONS env var. The service defers the actual sends
+        // to afterCommit, so a failure there cannot roll back this transaction.
+        welcomeConnectionService.sendWelcomeRequests(user.getId());
     }
 
     public List<User> fetchAll() {
