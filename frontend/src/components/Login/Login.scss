@@ -1,3 +1,5 @@
+@use '../../styles/tokens' as *;
+
 // Mobile-first, matches the register page: logo sits in normal flow above
 // the form card, content is vertically centered because the login form is
 // short enough to fit comfortably.
@@ -12,6 +14,62 @@
   @media (min-width: 576px) {
     justify-content: center;
     padding: 48px 20px 140px;
+  }
+}
+
+.login-subheading {
+  position: relative;
+  margin-bottom: 26px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: $primary;
+
+  .login-subheading__tagline {
+    display: block;
+    position: relative;
+    margin-top: 18px;
+    padding-top: 14px;
+    font-size: 0.72em;
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: 0.005em;
+    background: $gradient-primary;
+    background-size: 220% 220%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: loginAccentSweep 6s ease-in-out infinite;
+
+    // Gradient divider that visually separates the welcome from the tagline.
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 38px;
+      height: 2px;
+      border-radius: 999px;
+      background: $gradient-primary;
+      background-size: 220% 220%;
+      background-position: 0% 50%;
+      animation: loginAccentSweep 6s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes loginAccentSweep {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-subheading .login-subheading__tagline,
+  .login-subheading .login-subheading__tagline::before {
+    animation: none;
   }
 }
 

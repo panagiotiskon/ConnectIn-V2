@@ -60,8 +60,11 @@ const Login = () => {
         decoding="async"
       />
       <div className="form-container">
-        <h2 className="form-subheading">
-          Welcome to your professional community!
+        <h2 className="form-subheading login-subheading">
+          Welcome to ConnectIn        
+          <span className="login-subheading__tagline">
+            No noise. Just opportunities.
+          </span>
         </h2>
         <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mb-3" controlId="loginEmail">
