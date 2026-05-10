@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -111,10 +113,17 @@ public class UserService {
         }
 
         // Best-effort: send pending connection requests from the launch-seed users.
-        // Gated by WELCOME_CONNECTIONS env var. Each request runs in its own
-        // REQUIRES_NEW transaction inside the service, so a failure there cannot
-        // mark this registration transaction rollback-only.
-        welcomeConnectionService.sendWelcomeRequests(user.getId());
+        // Gated by WELCOME_CONNECTIONS env var. Deferred to afterCommit so the
+        // REQUIRES_NEW transactions inside the service can actually see the newly
+        // inserted user row — otherwise findById(newUserId) returns empty and
+        // every request is silently skipped.
+        final Long newUserId = user.getId();
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                welcomeConnectionService.sendWelcomeRequests(newUserId);
+            }
+        });
     }
 
     public List<User> fetchAll() {
