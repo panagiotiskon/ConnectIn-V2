@@ -1,15 +1,20 @@
 package backend.connectin.config;
 
 import backend.connectin.domain.Connection;
+import backend.connectin.domain.Education;
+import backend.connectin.domain.Experience;
 import backend.connectin.domain.JobApplication;
 import backend.connectin.domain.JobPost;
+import backend.connectin.domain.PersonalInfo;
 import backend.connectin.domain.Post;
 import backend.connectin.domain.Role;
+import backend.connectin.domain.Skill;
 import backend.connectin.domain.User;
 import backend.connectin.domain.enums.ConnectionStatus;
 import backend.connectin.domain.repository.ConnectionRepository;
 import backend.connectin.domain.repository.JobApplicationRepository;
 import backend.connectin.domain.repository.JobPostRepository;
+import backend.connectin.domain.repository.PersonalInfoRepository;
 import backend.connectin.domain.repository.PostRepository;
 import backend.connectin.domain.repository.RoleRepository;
 import backend.connectin.domain.repository.UserRepository;
@@ -23,7 +28,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +67,7 @@ public class LaunchDataSeeder {
     private final JobPostRepository jobPostRepository;
     private final JobApplicationRepository jobApplicationRepository;
     private final ConnectionRepository connectionRepository;
+    private final PersonalInfoRepository personalInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final boolean enabled;
     private final String adminEmail;
@@ -70,6 +78,7 @@ public class LaunchDataSeeder {
                             JobPostRepository jobPostRepository,
                             JobApplicationRepository jobApplicationRepository,
                             ConnectionRepository connectionRepository,
+                            PersonalInfoRepository personalInfoRepository,
                             PasswordEncoder passwordEncoder,
                             @Value("${app.seed.launch.enabled:false}") boolean enabled,
                             @Value("${app.admin.email:" + ADMIN_EMAIL_PROPERTY + "}") String adminEmail) {
@@ -79,6 +88,7 @@ public class LaunchDataSeeder {
         this.jobPostRepository = jobPostRepository;
         this.jobApplicationRepository = jobApplicationRepository;
         this.connectionRepository = connectionRepository;
+        this.personalInfoRepository = personalInfoRepository;
         this.passwordEncoder = passwordEncoder;
         this.enabled = enabled;
         this.adminEmail = adminEmail;
@@ -119,6 +129,81 @@ public class LaunchDataSeeder {
             );
             users = userRepository.saveAll(users);
             log.info("[LaunchDataSeeder] Seeded {} users", users.size());
+
+            // ---- Personal info: skills, education, experience ----
+            // Profiles are tailored to each user's posts, applications, and the jobs they
+            // own (e.g. Yannis owns the Connect-In requisitions, so he reads as the
+            // hiring manager; Elena owns the Aegean Labs design role, etc.).
+            seedPersonalInfo(users.get(0),
+                    List.of("Java", "Spring Boot", "MySQL", "OAuth & JWT", "REST APIs"),
+                    List.of(
+                            edu("National Technical University of Athens", "BSc Computer Science",
+                                    LocalDate.of(2015, 9, 1), LocalDate.of(2019, 7, 1)),
+                            edu("University of Edinburgh", "MSc Software Engineering",
+                                    LocalDate.of(2019, 9, 1), LocalDate.of(2020, 9, 1))
+                    ),
+                    List.of(
+                            exp("Software Engineer", "FinHub",
+                                    LocalDate.of(2020, 10, 1), LocalDate.of(2022, 8, 1)),
+                            exp("Senior Backend Engineer", "Acme Corp",
+                                    LocalDate.of(2022, 9, 1), null)
+                    ));
+
+            seedPersonalInfo(users.get(1),
+                    List.of("React", "TypeScript", "CSS", "Distributed Systems", "Accessibility"),
+                    List.of(
+                            edu("University of Athens", "BSc Software Engineering",
+                                    LocalDate.of(2015, 9, 1), LocalDate.of(2019, 7, 1))
+                    ),
+                    List.of(
+                            exp("Junior Frontend Developer", "WebStack",
+                                    LocalDate.of(2019, 9, 1), LocalDate.of(2021, 5, 1)),
+                            exp("Frontend Engineer", "Aegean Labs",
+                                    LocalDate.of(2021, 6, 1), null)
+                    ));
+
+            seedPersonalInfo(users.get(2),
+                    List.of("Kubernetes", "AWS", "Terraform", "Java", "Observability"),
+                    List.of(
+                            edu("National Technical University of Athens",
+                                    "MEng Electrical & Computer Engineering",
+                                    LocalDate.of(2012, 9, 1), LocalDate.of(2017, 7, 1))
+                    ),
+                    List.of(
+                            exp("Backend Developer", "Acme Corp",
+                                    LocalDate.of(2017, 9, 1), LocalDate.of(2020, 6, 1)),
+                            exp("DevOps Engineer", "Olympus Tech",
+                                    LocalDate.of(2020, 7, 1), null)
+                    ));
+
+            seedPersonalInfo(users.get(3),
+                    List.of("Figma", "User Research", "Prototyping", "Design Systems", "Workshop Facilitation"),
+                    List.of(
+                            edu("Athens School of Fine Arts", "BA Graphic Design",
+                                    LocalDate.of(2014, 9, 1), LocalDate.of(2018, 7, 1))
+                    ),
+                    List.of(
+                            exp("UX Designer", "DesignWorks",
+                                    LocalDate.of(2018, 9, 1), LocalDate.of(2021, 4, 1)),
+                            exp("Product Designer", "Aegean Labs",
+                                    LocalDate.of(2021, 5, 1), null)
+                    ));
+
+            seedPersonalInfo(users.get(4),
+                    List.of("Engineering Leadership", "System Design", "Hiring", "Mentoring", "Java"),
+                    List.of(
+                            edu("Athens University of Economics and Business", "BSc Informatics",
+                                    LocalDate.of(2010, 9, 1), LocalDate.of(2014, 7, 1)),
+                            edu("University of Patras", "MSc Computer Science",
+                                    LocalDate.of(2014, 9, 1), LocalDate.of(2016, 7, 1))
+                    ),
+                    List.of(
+                            exp("Senior Software Engineer", "FinHub",
+                                    LocalDate.of(2016, 9, 1), LocalDate.of(2022, 2, 1)),
+                            exp("Engineering Manager", "Connect-In",
+                                    LocalDate.of(2022, 3, 1), null)
+                    ));
+            log.info("[LaunchDataSeeder] Seeded personal info for {} users", users.size());
 
             // ---- Posts (6) ----
             Instant now = Instant.now();
@@ -255,5 +340,52 @@ public class LaunchDataSeeder {
     private void addConnectionPair(List<Connection> sink, Long a, Long b, ConnectionStatus status, Instant when) {
         sink.add(buildConnection(a, b, status, when));
         sink.add(buildConnection(b, a, status, when));
+    }
+
+    private void seedPersonalInfo(User user, List<String> skillTitles,
+                                  List<Education> educations, List<Experience> experiences) {
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setUser(user);
+
+        List<Skill> skills = new ArrayList<>();
+        for (String title : skillTitles) {
+            Skill skill = new Skill();
+            skill.setSkillTitle(title);
+            skill.setSkillDescription(null);
+            skill.setIsPublic(true);
+            skill.setPersonalInfo(personalInfo);
+            skills.add(skill);
+        }
+        for (Education education : educations) {
+            education.setIsPublic(true);
+            education.setPersonalInfo(personalInfo);
+        }
+        for (Experience experience : experiences) {
+            experience.setIsPublic(true);
+            experience.setPersonalInfo(personalInfo);
+        }
+        personalInfo.setSkills(skills);
+        personalInfo.setEducations(new ArrayList<>(educations));
+        personalInfo.setExperiences(new ArrayList<>(experiences));
+
+        personalInfoRepository.save(personalInfo);
+    }
+
+    private Education edu(String universityName, String fieldOfStudy, LocalDate startDate, LocalDate endDate) {
+        Education e = new Education();
+        e.setUniversityName(universityName);
+        e.setFieldOfStudy(fieldOfStudy);
+        e.setStartDate(startDate);
+        e.setEndDate(endDate);
+        return e;
+    }
+
+    private Experience exp(String jobTitle, String companyName, LocalDate startDate, LocalDate endDate) {
+        Experience x = new Experience();
+        x.setJobTitle(jobTitle);
+        x.setCompanyName(companyName);
+        x.setStartDate(startDate);
+        x.setEndDate(endDate);
+        return x;
     }
 }
