@@ -129,7 +129,9 @@ public class LaunchDataSeeder {
             );
             users = userRepository.saveAll(users);
             log.info("[LaunchDataSeeder] Seeded {} users", users.size());
+            // temp fix
 
+            return; 
             // ---- Personal info: skills, education, experience ----
             // Profiles are tailored to each user's posts, applications, and the jobs they
             // own (e.g. Yannis owns the Connect-In requisitions, so he reads as the
