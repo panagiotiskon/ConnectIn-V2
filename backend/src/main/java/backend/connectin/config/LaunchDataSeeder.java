@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * One-shot launch fixture seeder.
@@ -109,14 +110,6 @@ public class LaunchDataSeeder {
                 return;
             }
 
-            long nonAdminUsers = userRepository.findAll().stream()
-                    .filter(u -> !u.getEmail().equalsIgnoreCase(adminEmail))
-                    .count();
-            if (nonAdminUsers > 0) {
-                log.info("[LaunchDataSeeder] Skipping seed: {} non-admin users already exist", nonAdminUsers);
-                return;
-            }
-
             log.warn("[LaunchDataSeeder] LAUNCH_SEED=true — seeding launch fixtures.");
 
             Role userRole = roleRepository.findByName("ROLE_USER");
@@ -128,11 +121,11 @@ public class LaunchDataSeeder {
             // ---- Users (5) ----
             // Emails are sourced from SEED_USER_EMAILS so WelcomeConnectionService stays in sync.
             List<User> users = List.of(
-                    buildUser(SEED_USER_EMAILS.get(0), "Alex", "Morgan", "+30 6912345001", userRole),
-                    buildUser(SEED_USER_EMAILS.get(1), "Maria", "Papadopoulou", "+30 6912345002", userRole),
-                    buildUser(SEED_USER_EMAILS.get(2), "Nikos", "Dimitriou", "+30 6912345003", userRole),
-                    buildUser(SEED_USER_EMAILS.get(3), "Elena", "Georgiou", "+30 6912345004", userRole),
-                    buildUser(SEED_USER_EMAILS.get(4), "Yannis", "Koutras", "+30 6912345005", userRole)
+                    getOrCreateSeedUser(SEED_USER_EMAILS.get(0), "Alex", "Morgan", "+30 6912345001", userRole),
+                    getOrCreateSeedUser(SEED_USER_EMAILS.get(1), "Maria", "Papadopoulou", "+30 6912345002", userRole),
+                    getOrCreateSeedUser(SEED_USER_EMAILS.get(2), "Nikos", "Dimitriou", "+30 6912345003", userRole),
+                    getOrCreateSeedUser(SEED_USER_EMAILS.get(3), "Elena", "Georgiou", "+30 6912345004", userRole),
+                    getOrCreateSeedUser(SEED_USER_EMAILS.get(4), "Yannis", "Koutras", "+30 6912345005", userRole)
             );
             users = userRepository.saveAll(users);
             log.info("[LaunchDataSeeder] Seeded {} users", users.size());
@@ -311,6 +304,16 @@ public class LaunchDataSeeder {
         return u;
     }
 
+    private User getOrCreateSeedUser(String email, String firstName, String lastName, String phone, Role role) {
+        Optional<User> existing = userRepository.findByEmail(email);
+        if (existing.isPresent()) {
+            log.info("[LaunchDataSeeder] Found existing user with email {}. Skipping creation.", email);
+            return existing.get();
+        }
+        User newUser = buildUser(email, firstName, lastName, phone, role);
+        return userRepository.save(newUser);
+    }
+
     private Post buildPost(Long userId, String content, Instant createdAt) {
         Post p = new Post();
         p.setUserId(userId);
@@ -358,8 +361,6 @@ public class LaunchDataSeeder {
         for (String title : skillTitles) {
             Skill skill = new Skill();
             skill.setSkillTitle(title);
-            // skill_description is NOT NULL in the schema (V10); empty string
-            // matches the controller's behavior when description is omitted.
             skill.setSkillDescription("");
             skill.setIsPublic(true);
             skill.setPersonalInfo(personalInfo);
@@ -376,8 +377,11 @@ public class LaunchDataSeeder {
         personalInfo.setSkills(skills);
         personalInfo.setEducations(new ArrayList<>(educations));
         personalInfo.setExperiences(new ArrayList<>(experiences));
+        log.info("[LaunchDataSeeder] Seeded {} users", );
 
         personalInfoRepository.save(personalInfo);
+        log.info("[LaunchDataSeeder] Seeded {} personal info rows", );
+
     }
 
     private Education edu(String universityName, String fieldOfStudy, LocalDate startDate, LocalDate endDate) {
