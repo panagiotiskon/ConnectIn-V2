@@ -16,7 +16,7 @@
   }
 
   .popup-container {
-    background-color: #d4edda;
+    background-color: $success-bg;
     padding: 20px 30px;
     border-radius: 8px;
     max-width: 400px;
@@ -28,15 +28,15 @@
   .popup-content  {
     margin-top: 0;
     margin-bottom: 0;
-    background-color: #d4edda;
+    background-color: $success-bg;
     width: 100%;
     font-size: 1rem;
     border:none;
-    color: #333;
+    color: $text-body;
   }
 
   .popup-container.success {
-    border: 2px solid #d4edda;
+    border: 2px solid $success-bg;
   }
 
   .MDBBtn {

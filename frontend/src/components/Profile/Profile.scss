@@ -29,7 +29,7 @@
 .profile-section-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin: 0;
 }
 
@@ -81,7 +81,7 @@
 .profile-entry-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111;
+  color: $text-darkest;
   margin-bottom: 0.2rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -91,7 +91,7 @@
 
 .profile-entry-subtitle {
   font-size: 0.875rem;
-  color: #374151;
+  color: $text-default;
   margin-bottom: 0.15rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -101,7 +101,7 @@
 
 .profile-entry-meta {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: $text-placeholder;
   margin-bottom: 0.25rem;
 }
 
@@ -111,7 +111,7 @@
   font-weight: 500;
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
-  background: #f0f6fa;
+  background: $surface-tint;
   color: $primary;
 }
 
@@ -121,15 +121,15 @@
   font-weight: 500;
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
-  background: #f3f4f6;
-  color: #9ca3af;
+  background: $surface-muted;
+  color: $text-placeholder;
 }
 
 /* ── Delete Button ── */
 .profile-entry-delete {
   background: none;
   border: none;
-  color: #c0c4cc;
+  color: $icon-soft;
   cursor: pointer;
   padding: 0.3rem 0.4rem;
   border-radius: 8px;
@@ -141,7 +141,7 @@
     color 0.15s;
 
   &:hover {
-    background: #fee2e2;
+    background: $danger-bg;
     color: $danger-soft;
   }
 }
@@ -150,7 +150,7 @@
 .profile-empty-state {
   padding: 1.25rem 0;
   text-align: center;
-  color: #9ca3af;
+  color: $text-placeholder;
   font-size: 0.875rem;
   margin: 0;
 }
@@ -161,7 +161,7 @@
   border-radius: 20px;
   border: 1.5px solid $border-light;
   background: transparent;
-  color: #555;
+  color: $text-soft;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -170,8 +170,8 @@
     color 0.18s;
 
   &:hover {
-    border-color: #9ca3af;
-    color: #374151;
+    border-color: $text-placeholder;
+    color: $text-default;
   }
 }
 
@@ -216,12 +216,12 @@
 .modal-header {
   padding: 1.25rem 1.25rem 1rem;
   border-bottom: 1px solid $divider;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f6fa 100%);
+  background: linear-gradient(135deg, #fff 0%, $surface-tint 100%);
 
   .modal-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #111;
+    color: $text-darkest;
   }
 
   .btn-close {
@@ -243,7 +243,7 @@
 
   .form-label {
     font-weight: 600;
-    color: #374151;
+    color: $text-default;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
@@ -313,7 +313,7 @@
   bottom: 20px;
   right: 20px;
   z-index: 1050;
-  background-color: #28a745;
+  background-color: $success;
   color: #fff;
   border-radius: 8px;
   border: none;

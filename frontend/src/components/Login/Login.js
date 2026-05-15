@@ -51,79 +51,81 @@ const Login = () => {
 
   return (
     <div className="login-wrapper">
-      <img
-        src="/connectin-logo.png"
-        alt="ConnectIn Logo"
-        className="connectInLogo"
-        fetchpriority="high"
-        loading="eager"
-        decoding="async"
-      />
-      <div className="form-container">
-        <h2 className="form-subheading login-subheading">
-          Welcome to ConnectIn        
-          <span className="login-subheading__tagline">
-            No noise. Just opportunities.
-          </span>
-        </h2>
-        <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-          <Form.Group className="mb-3" controlId="loginEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Email"
-              {...register('email', { required: 'Email is required' })}
-              isInvalid={!!errors.email}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.email?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
+      <div className="login-content">
+        <img
+          src="/connectin-logo.png"
+          alt="ConnectIn Logo"
+          className="connectInLogo"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="form-container">
+          <h2 className="form-subheading login-subheading">
+            Welcome to ConnectIn
+            <span className="login-subheading__tagline">
+              No noise. Just opportunities.
+            </span>
+          </h2>
+          <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+            <Form.Group className="mb-3" controlId="loginEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                {...register('email', { required: 'Email is required' })}
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="loginPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              {...register('password', { required: 'Password is required' })}
-              isInvalid={!!errors.password}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.password?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
+            <Form.Group className="mb-3" controlId="loginPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                {...register('password', { required: 'Password is required' })}
+                isInvalid={!!errors.password}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.password?.message}
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <div className="text-center">
-            <button type="submit" className="btn-gradient" disabled={loading}>
-              {loading && (
-                <MDBSpinner size="sm" color="light">
-                  <span className="visually-hidden" />
-                </MDBSpinner>
-              )}
-              Sign in
-            </button>
-          </div>
-
-          {message && (
-            <div className="alert alert-danger mt-3" role="alert">
-              {message}
+            <div className="text-center">
+              <button type="submit" className="btn-gradient" disabled={loading}>
+                {loading && (
+                  <MDBSpinner size="sm" color="light">
+                    <span className="visually-hidden" />
+                  </MDBSpinner>
+                )}
+                Sign in
+              </button>
             </div>
-          )}
-        </form>
 
-        <div
-          className="text-center"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('/register');
-          }}
-        >
-          <p className="inner-footer-text">
-            New to ConnectIn?
-            <a href="#!" className="link">
-              Join now
-            </a>
-          </p>
+            {message && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {message}
+              </div>
+            )}
+          </form>
+
+          <div
+            className="text-center"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/register');
+            }}
+          >
+            <p className="inner-footer-text">
+              New to ConnectIn?
+              <a href="#!" className="link">
+                Join now
+              </a>
+            </p>
+          </div>
         </div>
       </div>
       <Footer />

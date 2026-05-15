@@ -36,7 +36,7 @@
 
 .skeleton-avatar,
 .skeleton-line {
-  background: linear-gradient(90deg, $border-light 25%, #f5f5f5 50%, $border-light 75%);
+  background: linear-gradient(90deg, $border-light 25%, $surface-soft 50%, $border-light 75%);
   background-size: 800px 100%;
   animation: skeleton-shimmer 1.4s infinite linear;
   border-radius: 4px;

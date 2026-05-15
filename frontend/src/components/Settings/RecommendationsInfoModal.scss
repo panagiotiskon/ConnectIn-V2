@@ -28,7 +28,7 @@
   &__title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #111827;
+    color: $text-strong;
     margin: 0;
   }
 
@@ -42,7 +42,7 @@
 
   &__intro {
     font-size: 0.95rem;
-    color: #374151;
+    color: $text-default;
     line-height: 1.65;
     margin: 0;
   }
@@ -58,7 +58,7 @@
 
   &__text {
     font-size: 0.9rem;
-    color: #374151;
+    color: $text-default;
     line-height: 1.65;
     margin: 0;
   }
@@ -77,7 +77,7 @@
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    background: #f8fafc;
+    background: $surface-pale;
     border: 1px solid $border-light;
     border-radius: 12px;
     padding: 0.75rem 1rem;
@@ -94,25 +94,25 @@
     display: block;
     font-size: 0.875rem;
     font-weight: 700;
-    color: #111827;
+    color: $text-strong;
     margin-bottom: 0.2rem;
   }
 
   &__signal-detail {
     display: block;
     font-size: 0.825rem;
-    color: #6b7280;
+    color: $text-secondary;
     line-height: 1.5;
   }
 
   /* ── Privacy note ── */
   &__note {
     font-size: 0.8rem;
-    color: #6b7280;
+    color: $text-secondary;
     line-height: 1.5;
     margin: 0.25rem 0 0;
     padding: 0.6rem 0.875rem;
-    background: #f0f6fa;
+    background: $surface-tint;
     border-left: 3px solid $primary;
     border-radius: 0 8px 8px 0;
   }

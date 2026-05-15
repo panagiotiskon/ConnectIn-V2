@@ -75,7 +75,7 @@ const Home = () => {
   const handlePostSubmit = useEventCallback(async () => {
     if (submittingPost) return;
     if (!postContent.trim() && !uploadedFile) {
-      setPostError('Post content or media is required.');
+      setPostError('Your post is empty');
       return;
     }
     setPostError(null);
@@ -117,7 +117,7 @@ const Home = () => {
     if (!content?.trim()) {
       setCommentErrors((prev) => ({
         ...prev,
-        [postId]: 'Comment cannot be empty.',
+        [postId]: 'Your comment is empty',
       }));
       return;
     }

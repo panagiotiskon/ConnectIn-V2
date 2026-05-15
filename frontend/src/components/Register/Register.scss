@@ -1,16 +1,33 @@
 @use '../../styles/tokens' as *;
 
-// Mobile-first: baseline rules target the smallest viewport,
-// then enhance upwards at the Bootstrap `sm` breakpoint (≥576 px).
 .register-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 24px 16px 120px;
+  padding: 24px 16px 0;
 
   @media (min-width: 576px) {
-    padding: 48px 20px 140px;
+    padding: 48px 20px 0;
+  }
+
+  .register-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .footer {
+    position: static;
+    width: calc(100% + 32px);
+    margin: 24px -16px 0;
+
+    @media (min-width: 576px) {
+      width: calc(100% + 40px);
+      margin: 24px -20px 0;
+    }
   }
 }
 
@@ -40,7 +57,7 @@
 .optional-mark {
   font-size: 0.775rem;
   font-weight: 400;
-  color: #9ca3af;
+  color: $text-placeholder;
   margin-left: 4px;
 }
 
@@ -205,8 +222,9 @@
     &:disabled {
       opacity: 0.35;
       cursor: not-allowed;
-      border-color: #9ca3af;
-      color: #9ca3af;
+      border-color: $text-placeholder;
+      color: $text-placeholder;
     }
   }
 }
+

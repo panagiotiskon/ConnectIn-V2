@@ -44,7 +44,7 @@
 .profile-card__name {
   font-size: 1rem;
   font-weight: 700;
-  color: #111827;
+  color: $text-strong;
   margin: 0 0 0.2rem;
   cursor: pointer;
   transition: color 0.15s;
@@ -57,7 +57,7 @@
 
 .profile-card__email {
   font-size: 0.78rem;
-  color: #9ca3af;
+  color: $text-placeholder;
   margin: 0 0 1rem;
   white-space: nowrap;
   overflow: hidden;
@@ -84,7 +84,7 @@
   margin-bottom: 0.75rem;
 
   &:hover {
-    background: #f3f4f6;
+    background: $surface-muted;
   }
 
   i {
@@ -100,12 +100,12 @@
   flex: 1;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #374151;
+  color: $text-default;
 }
 
 .profile-card__network-chevron {
   font-size: 0.7rem;
-  color: #9ca3af;
+  color: $text-placeholder;
 }
 
 /* ── View profile button ── */

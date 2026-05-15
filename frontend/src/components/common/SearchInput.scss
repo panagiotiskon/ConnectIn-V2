@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   background: #fff;
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid $border-default;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -18,7 +18,7 @@
 
 .search-input__icon {
   padding: 0 10px 0 16px;
-  color: #9ca3af;
+  color: $text-placeholder;
   font-size: 0.85rem;
   flex-shrink: 0;
   transition: color 0.2s ease;
@@ -35,10 +35,10 @@
   background: transparent;
   padding: 13px 12px 13px 0;
   font-size: 0.95rem;
-  color: #111827;
+  color: $text-strong;
 
   &::placeholder {
-    color: #9ca3af;
+    color: $text-placeholder;
   }
 }
 

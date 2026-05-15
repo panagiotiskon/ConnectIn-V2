@@ -17,7 +17,7 @@
 .settings-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -42,7 +42,7 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 12px;
-  background: #f0f6fa;
+  background: $surface-tint;
 }
 
 .settings-card-icon {
@@ -57,13 +57,13 @@
 .settings-card-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin: 0 0 0.3rem;
 }
 
 .settings-card-desc {
   font-size: 0.85rem;
-  color: #6b7280;
+  color: $text-secondary;
   margin: 0;
   line-height: 1.5;
 }
@@ -100,7 +100,7 @@
   bottom: 20px;
   right: 20px;
   z-index: 1050;
-  background-color: #28a745;
+  background-color: $success;
   color: #fff;
   border-radius: 8px;
   border: none;

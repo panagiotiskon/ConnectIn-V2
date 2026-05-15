@@ -28,7 +28,7 @@
 .profile-section-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin: 0;
 }
 
@@ -59,7 +59,7 @@
 .profile-entry-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111;
+  color: $text-darkest;
   margin-bottom: 0.2rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -69,7 +69,7 @@
 
 .profile-entry-subtitle {
   font-size: 0.875rem;
-  color: #374151;
+  color: $text-default;
   margin-bottom: 0.15rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -79,7 +79,7 @@
 
 .profile-entry-meta {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: $text-placeholder;
   margin-bottom: 0.25rem;
 }
 
@@ -89,7 +89,7 @@
   font-weight: 500;
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
-  background: #f0f6fa;
+  background: $surface-tint;
   color: $primary;
 }
 
@@ -99,15 +99,15 @@
   font-weight: 500;
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
-  background: #f3f4f6;
-  color: #9ca3af;
+  background: $surface-muted;
+  color: $text-placeholder;
 }
 
 /* ── Empty State ── */
 .profile-empty-state {
   padding: 1.25rem 0;
   text-align: center;
-  color: #9ca3af;
+  color: $text-placeholder;
   font-size: 0.875rem;
   margin: 0;
 }

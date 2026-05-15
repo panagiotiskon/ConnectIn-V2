@@ -23,7 +23,7 @@
 .notifications-card-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin: 0;
 }
 
@@ -98,14 +98,14 @@
 /* ── Text ── */
 .notif-text {
   font-size: 0.9rem;
-  color: #374151;
+  color: $text-default;
   line-height: 1.4;
   word-break: break-word;
 }
 
 .notif-name {
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   text-decoration: none;
 
   &:hover {
@@ -156,11 +156,11 @@
   }
 
   &--delete {
-    background: #f3f4f6;
-    color: #9ca3af;
+    background: $surface-muted;
+    color: $text-placeholder;
 
     &:hover {
-      background: #fee2e2;
+      background: $danger-bg;
       color: $danger-soft;
     }
   }
@@ -170,7 +170,7 @@
 .notif-empty-state {
   padding: 1.5rem 0;
   text-align: center;
-  color: #9ca3af;
+  color: $text-placeholder;
   font-size: 0.875rem;
   margin: 0;
 }

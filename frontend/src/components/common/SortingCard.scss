@@ -23,15 +23,15 @@
   background: transparent;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #6b7280;
+  color: $text-secondary;
   cursor: pointer;
   transition:
     background 0.18s,
     color 0.18s;
 
   &:hover:not(.sorting-tab--active) {
-    background: #f3f4f6;
-    color: #374151;
+    background: $surface-muted;
+    color: $text-default;
   }
 
   &--active {

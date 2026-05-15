@@ -1,11 +1,38 @@
+// Brand
 $primary: #35677e;
 $teal: #1a8a9a;
 $purple: #5b4fcf;
+
+// Surfaces
 $bg: #f3f2ef;
+$surface-muted: #f3f4f6;
+$surface-tint: #f0f6fa;
+$surface-pale: #f8fafc;
+$surface-soft: #f5f5f5;
+
+// Borders
 $border-light: #e8e8e8;
+$border-default: #e5e7eb;
 $divider: #f0f0f0;
+
+// Text
+$text-strong: #111827;
+$text-darkest: #111;
+$text-default: #374151;
+$text-body: #333;
 $text-muted: #666;
+$text-secondary: #6b7280;
+$text-soft: #555;
+$text-placeholder: #9ca3af;
+$icon-soft: #c0c4cc;
+
+// Status
+$success: #28a745;
+$success-bg: #d4edda;
 $danger: #dc3545;
 $danger-soft: #ef4444;
+$danger-bg: #fee2e2;
+$danger-bg-soft: #fff5f5;
 
+// Gradients
 $gradient-primary: linear-gradient(135deg, $teal 0%, $primary 50%, $purple 100%);

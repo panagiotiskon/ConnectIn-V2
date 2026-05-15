@@ -17,7 +17,7 @@
   &__title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #111827;
+    color: $text-strong;
     margin: 0;
   }
 
@@ -37,7 +37,7 @@
 
   &__message {
     font-size: 0.95rem;
-    color: #374151;
+    color: $text-default;
     margin: 0;
     line-height: 1.6;
   }
@@ -73,12 +73,12 @@
     }
 
     &--cancel {
-      background-color: #f3f4f6;
-      color: #374151;
-      border: 1px solid #e5e7eb;
+      background-color: $surface-muted;
+      color: $text-default;
+      border: 1px solid $border-default;
 
       &:not(:disabled):hover {
-        background-color: #e5e7eb;
+        background-color: $border-default;
       }
     }
 

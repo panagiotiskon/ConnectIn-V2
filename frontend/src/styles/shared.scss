@@ -40,7 +40,7 @@
 .auth-form {
   .form-label {
     font-weight: 600;
-    color: #374151;
+    color: $text-default;
     font-size: 0.875rem;
     margin-bottom: 0.4rem;
   }
@@ -60,7 +60,7 @@
 
     &:focus {
       border-color: $primary;
-      box-shadow: 0 0 0 3px rgba(53, 103, 126, 0.1);
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
       outline: none;
     }
 
@@ -71,7 +71,7 @@
 
       &:focus {
         border-color: $danger;
-        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+        box-shadow: 0 0 0 3px rgba($danger, 0.12);
       }
     }
   }
@@ -169,7 +169,7 @@
 
 .modal-shell {
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: linear-gradient(160deg, #ffffff 0%, #f0f6fa 100%);
+  border: 1px solid rgba(#fff, 0.6);
+  background: linear-gradient(160deg, #fff 0%, $surface-tint 100%);
   overflow: hidden;
 }

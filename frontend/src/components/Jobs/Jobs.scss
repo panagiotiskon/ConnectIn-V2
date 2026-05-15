@@ -26,7 +26,7 @@
 .jobs-section-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #111;
+  color: $text-darkest;
   margin: 0;
 }
 
@@ -91,7 +91,7 @@
 .jobs-entry-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #111;
+  color: $text-darkest;
   word-wrap: break-word;
   overflow-wrap: break-word;
   min-width: 0;
@@ -99,19 +99,19 @@
 
 .jobs-entry-subtitle {
   font-size: 0.875rem;
-  color: #374151;
+  color: $text-default;
   margin-bottom: 0.15rem;
 }
 
 .jobs-entry-meta {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: $text-placeholder;
   margin-bottom: 0.5rem;
 }
 
 .jobs-entry-description {
   font-size: 0.875rem;
-  color: #555;
+  color: $text-soft;
   margin-bottom: 0.5rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -130,7 +130,7 @@
 .jobs-entry-delete {
   background: none;
   border: none;
-  color: #c0c4cc;
+  color: $icon-soft;
   cursor: pointer;
   padding: 0.3rem 0.4rem;
   border-radius: 8px;
@@ -142,7 +142,7 @@
     color 0.15s;
 
   &:hover {
-    background: #fee2e2;
+    background: $danger-bg;
     color: $danger-soft;
   }
 }
@@ -162,7 +162,7 @@
 .jobs-empty-state {
   padding: 1.25rem 0;
   text-align: center;
-  color: #9ca3af;
+  color: $text-placeholder;
   font-size: 0.875rem;
   margin: 0;
 }
@@ -179,7 +179,7 @@
   padding: 0.35rem 0.85rem;
   border-radius: 20px;
   border: 1.5px solid #e0e7ef;
-  background: #f8fafc;
+  background: $surface-pale;
   color: $primary;
   font-size: 0.8rem;
   font-weight: 600;
@@ -237,7 +237,7 @@
   }
 
   &:hover {
-    background: #f8fafc;
+    background: $surface-pale;
 
     .jobs-applicant-arrow {
       opacity: 1;
@@ -252,14 +252,14 @@
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  background: #e5e7eb;
+  background: $border-default;
 }
 
 .jobs-applicant-name {
   flex: 1;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #111;
+  color: $text-darkest;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -268,7 +268,7 @@
 
 .jobs-applicant-arrow {
   font-size: 0.7rem;
-  color: #9ca3af;
+  color: $text-placeholder;
   opacity: 0;
   transition: opacity 0.15s, transform 0.15s;
   flex-shrink: 0;
@@ -280,7 +280,7 @@
   border-radius: 20px;
   border: 1.5px solid $border-light;
   background: transparent;
-  color: #555;
+  color: $text-soft;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -289,8 +289,8 @@
     color 0.18s;
 
   &:hover {
-    border-color: #9ca3af;
-    color: #374151;
+    border-color: $text-placeholder;
+    color: $text-default;
   }
 }
 
@@ -316,7 +316,7 @@
 .modal-body {
   .form-label {
     font-weight: 600;
-    color: #374151;
+    color: $text-default;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }

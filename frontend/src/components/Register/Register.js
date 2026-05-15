@@ -93,15 +93,16 @@ const Register = () => {
 
   return (
     <div className="register-wrapper">
-      <img
-        src="/connectin-logo.png"
-        alt="ConnectIn Logo"
-        className="connectInLogo"
-        fetchpriority="high"
-        loading="eager"
-        decoding="async"
-      />
-      <div className="form-container">
+      <div className="register-content">
+        <img
+          src="/connectin-logo.png"
+          alt="ConnectIn Logo"
+          className="connectInLogo"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+        />
+        <div className="form-container">
         <h2 className="form-subheading">
           Create your account
         </h2>
@@ -326,6 +327,7 @@ const Register = () => {
               Sign in
             </a>
           </p>
+        </div>
         </div>
       </div>
       <Footer />
