@@ -18,7 +18,7 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
         SELECT c
         FROM Connection c
         WHERE c.userId1 = :userId
-        AND (c.status = 'ACCEPTED')
+        AND c.status = 'ACCEPTED'
         """)
     List<Connection> findUserConnections(@Param("userId") Long userId);
 
@@ -26,7 +26,7 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
     @Query(value = """
             SELECT c
             FROM Connection c
-            WHERE c.userId1 = :userId AND (c.status = 'PENDING')
+            WHERE c.userId2 = :userId AND c.status = 'PENDING'
             """)
     List<Connection> findPendingUserConnections(@Param("userId") Long userId);
 

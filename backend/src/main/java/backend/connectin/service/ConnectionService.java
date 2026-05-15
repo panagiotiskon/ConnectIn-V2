@@ -94,7 +94,7 @@ public class ConnectionService {
 
     private List<ConnectedUserDTO> assembleConnectedUserDTOs(List<Connection> connections, boolean isPending) {
         List<Long> peerIds = connections.stream()
-                .map(Connection::getUserId2)
+                .map(connection -> isPending ? connection.getUserId1() : connection.getUserId2())
                 .distinct()
                 .toList();
 
