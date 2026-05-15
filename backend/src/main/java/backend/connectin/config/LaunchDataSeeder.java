@@ -380,7 +380,7 @@ public class LaunchDataSeeder {
         log.info("[LaunchDataSeeder] Seeded {} users", );
 
         personalInfoRepository.save(personalInfo);
-        log.info("[LaunchDataSeeder] Seeded {} personal info rows", );
+        log.info("[LaunchDataSeeder] Seeded {} personal info rows", user.getEmail());
 
     }
 
