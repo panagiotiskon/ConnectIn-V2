@@ -51,3 +51,4 @@ app:
       enabled: ${LAUNCH_SEED:false}
     welcome:
       enabled: ${WELCOME_CONNECTIONS:false}
+    password: ${SEED_PASSWORD:}

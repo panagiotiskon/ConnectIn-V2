@@ -49,7 +49,6 @@ import java.util.List;
 public class LaunchDataSeeder {
 
     private static final Logger log = LoggerFactory.getLogger(LaunchDataSeeder.class);
-    public static final String SEED_PASSWORD = "Demo123!"; // shared demo password
     private static final String ADMIN_EMAIL_PROPERTY = "admin@example.com";
 
     /** Emails of all seed users, in seeding order. Re-used by WelcomeConnectionService. */
@@ -71,6 +70,7 @@ public class LaunchDataSeeder {
     private final PasswordEncoder passwordEncoder;
     private final boolean enabled;
     private final String adminEmail;
+    private final String seedPassword;
 
     public LaunchDataSeeder(UserRepository userRepository,
                             RoleRepository roleRepository,
@@ -81,7 +81,8 @@ public class LaunchDataSeeder {
                             PersonalInfoRepository personalInfoRepository,
                             PasswordEncoder passwordEncoder,
                             @Value("${app.seed.launch.enabled:false}") boolean enabled,
-                            @Value("${app.admin.email:" + ADMIN_EMAIL_PROPERTY + "}") String adminEmail) {
+                            @Value("${app.admin.email:" + ADMIN_EMAIL_PROPERTY + "}") String adminEmail,
+                            @Value("${app.seed.password:}") String seedPassword) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.postRepository = postRepository;
@@ -92,6 +93,7 @@ public class LaunchDataSeeder {
         this.passwordEncoder = passwordEncoder;
         this.enabled = enabled;
         this.adminEmail = adminEmail;
+        this.seedPassword = seedPassword;
     }
 
     @Bean
@@ -99,6 +101,11 @@ public class LaunchDataSeeder {
     public CommandLineRunner seedLaunchData() {
         return args -> {
             if (!enabled) {
+                return;
+            }
+
+            if (seedPassword == null || seedPassword.isBlank()) {
+                log.error("[LaunchDataSeeder] LAUNCH_SEED=true but SEED_PASSWORD is not set. Aborting seed.");
                 return;
             }
 
@@ -299,7 +306,7 @@ public class LaunchDataSeeder {
         u.setFirstName(firstName);
         u.setLastName(lastName);
         u.setPhoneNumber(phone);
-        u.setPassword(passwordEncoder.encode(SEED_PASSWORD));
+        u.setPassword(passwordEncoder.encode(seedPassword));
         u.setRoles(List.of(role));
         return u;
     }
@@ -351,7 +358,9 @@ public class LaunchDataSeeder {
         for (String title : skillTitles) {
             Skill skill = new Skill();
             skill.setSkillTitle(title);
-            skill.setSkillDescription(null);
+            // skill_description is NOT NULL in the schema (V10); empty string
+            // matches the controller's behavior when description is omitted.
+            skill.setSkillDescription("");
             skill.setIsPublic(true);
             skill.setPersonalInfo(personalInfo);
             skills.add(skill);
