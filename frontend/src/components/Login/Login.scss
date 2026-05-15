@@ -1,19 +1,37 @@
 @use '../../styles/tokens' as *;
 
-// Mobile-first, matches the register page: logo sits in normal flow above
-// the form card, content is vertically centered because the login form is
-// short enough to fit comfortably.
+// Mobile-first, matches the register page: the logo + form card live in
+// `.login-content`, which grows to fill the viewport so the content stays
+// vertically centered while the footer is pushed to the bottom of the page.
 .login-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  padding: 24px 16px 120px;
+  padding: 24px 16px 0;
 
   @media (min-width: 576px) {
+    padding: 48px 20px 0;
+  }
+
+  .login-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding: 48px 20px 140px;
+    width: 100%;
+  }
+
+  .footer {
+    position: static;
+    width: calc(100% + 32px);
+    margin: 24px -16px 0;
+
+    @media (min-width: 576px) {
+      width: calc(100% + 40px);
+      margin: 24px -20px 0;
+    }
   }
 }
 
