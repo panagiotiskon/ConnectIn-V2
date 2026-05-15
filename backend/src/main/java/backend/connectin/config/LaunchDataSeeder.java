@@ -305,7 +305,7 @@ public class LaunchDataSeeder {
     }
 
     private User getOrCreateSeedUser(String email, String firstName, String lastName, String phone, Role role) {
-        Optional<User> existing = userRepository.findByEmail(email);
+        Optional<User> existing = userRepository.findUserByEmail(email);
         if (existing.isPresent()) {
             log.info("[LaunchDataSeeder] Found existing user with email {}. Skipping creation.", email);
             return existing.get();
@@ -377,7 +377,7 @@ public class LaunchDataSeeder {
         personalInfo.setSkills(skills);
         personalInfo.setEducations(new ArrayList<>(educations));
         personalInfo.setExperiences(new ArrayList<>(experiences));
-        log.info("[LaunchDataSeeder] Seeded {} users", );
+        log.info("[LaunchDataSeeder] Seeded {} users", user.getEmail());
 
         personalInfoRepository.save(personalInfo);
         log.info("[LaunchDataSeeder] Seeded {} personal info rows", user.getEmail());
