@@ -212,17 +212,17 @@ const Jobs = () => {
 
               {/* Created by you */}
               <div className="section-card jobs-section-card">
-                <div className="jobs-section-header">
-                  <h2 className="jobs-section-title">Created by you</h2>
-                  <button className="jobs-action-btn" onClick={() => setShowCreateModal(true)}>
+                <div className="section-header">
+                  <h2 className="section-title">Created by you</h2>
+                  <button className="add-pill" onClick={() => setShowCreateModal(true)}>
                     + Create Job
                   </button>
                 </div>
-                <div className="jobs-section-body">
+                <div className="section-body">
                   {loadingMyJobs ? (
                     <SkeletonCard count={1} />
                   ) : yourJobs.length === 0 ? (
-                    <p className="jobs-empty-state">No jobs created by you.</p>
+                    <p className="empty-state">No jobs created by you.</p>
                   ) : (
                     yourJobs.map((job) => (
                       <JobCard
@@ -274,14 +274,14 @@ const Jobs = () => {
 
               {/* Applied to */}
               <div className="section-card jobs-section-card">
-                <div className="jobs-section-header">
-                  <h2 className="jobs-section-title">Applied to</h2>
+                <div className="section-header">
+                  <h2 className="section-title">Applied to</h2>
                 </div>
-                <div className="jobs-section-body">
+                <div className="section-body">
                   {loadingMyJobs ? (
                     <SkeletonCard count={1} />
                   ) : appliedJobs.length === 0 ? (
-                    <p className="jobs-empty-state">You haven't applied to any jobs yet.</p>
+                    <p className="empty-state">You haven't applied to any jobs yet.</p>
                   ) : (
                     appliedJobs.map((job) => (
                       <JobCard
@@ -302,14 +302,14 @@ const Jobs = () => {
 
               {/* Top picks */}
               <div className="section-card jobs-section-card">
-                <div className="jobs-section-header">
-                  <h2 className="jobs-section-title">Top picks for you</h2>
+                <div className="section-header">
+                  <h2 className="section-title">Top picks for you</h2>
                 </div>
-                <div className="jobs-section-body">
+                <div className="section-body">
                   {loadingTopPicks ? (
                     <SkeletonCard count={1} />
                   ) : otherJobs.length === 0 ? (
-                    <p className="jobs-empty-state">No other jobs available.</p>
+                    <p className="empty-state">No other jobs available.</p>
                   ) : (
                     otherJobs.map((job) => (
                       <JobCard
@@ -322,7 +322,7 @@ const Jobs = () => {
                             <span className="jobs-applied-badge">✓ Applied</span>
                           ) : (
                             <button
-                              className="jobs-action-btn"
+                              className="add-pill"
                               onClick={() => handleApply(job.id)}
                               disabled={applyingJobId === job.id}
                             >

@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-/* ── Page Layout ── */
 .profile-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -16,181 +15,6 @@
 
 .profile-section-card {
   overflow: hidden;
-}
-
-.profile-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1.25rem 1rem;
-  border-bottom: 1px solid $divider;
-}
-
-.profile-section-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: $text-darkest;
-  margin: 0;
-}
-
-.profile-add-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.4rem 1.1rem;
-  border-radius: 20px;
-  border: none;
-  background: $gradient-primary;
-  background-size: 200% 200%;
-  background-position: left center;
-  color: #fff;
-  font-size: 0.825rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-position 0.4s ease;
-
-  &:hover {
-    background-position: right center;
-  }
-}
-
-/* ── Section Body ── */
-.profile-section-body {
-  padding: 0 1.25rem 0.5rem;
-}
-
-/* ── Entry Item ── */
-.profile-entry {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid $divider;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.profile-entry-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.profile-entry-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: $text-darkest;
-  margin-bottom: 0.2rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-.profile-entry-subtitle {
-  font-size: 0.875rem;
-  color: $text-default;
-  margin-bottom: 0.15rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-.profile-entry-meta {
-  font-size: 0.75rem;
-  color: $text-placeholder;
-  margin-bottom: 0.25rem;
-}
-
-.profile-entry-visibility {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.15rem 0.5rem;
-  border-radius: 10px;
-  background: $surface-tint;
-  color: $primary;
-}
-
-.profile-entry-visibility--private {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.15rem 0.5rem;
-  border-radius: 10px;
-  background: $surface-muted;
-  color: $text-placeholder;
-}
-
-/* ── Delete Button ── */
-.profile-entry-delete {
-  background: none;
-  border: none;
-  color: $icon-soft;
-  cursor: pointer;
-  padding: 0.3rem 0.4rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  line-height: 1;
-  flex-shrink: 0;
-  transition:
-    background 0.15s,
-    color 0.15s;
-
-  &:hover {
-    background: $danger-bg;
-    color: $danger-soft;
-  }
-}
-
-/* ── Empty State ── */
-.profile-empty-state {
-  padding: 1.25rem 0;
-  text-align: center;
-  color: $text-placeholder;
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* ── Modal Buttons ── */
-.profile-modal-btn-cancel {
-  padding: 0.45rem 1.1rem;
-  border-radius: 20px;
-  border: 1.5px solid $border-light;
-  background: transparent;
-  color: $text-soft;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    border-color 0.18s,
-    color 0.18s;
-
-  &:hover {
-    border-color: $text-placeholder;
-    color: $text-default;
-  }
-}
-
-.profile-modal-btn-save {
-  padding: 0.45rem 1.25rem;
-  border-radius: 20px;
-  border: none;
-  background: $gradient-primary;
-  background-size: 200% 200%;
-  background-position: left center;
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-position 0.4s ease;
-
-  &:hover {
-    background-position: right center;
-  }
 }
 
 /* ── Modal ── */
@@ -324,27 +148,8 @@
   }
 }
 
-/* ── Responsive ── */
 @media (max-width: 767px) {
   .profile-page {
     padding: 1rem 0.75rem;
-  }
-
-  .profile-section-header {
-    padding: 1rem 1rem 0.875rem;
-  }
-
-  .profile-section-body {
-    padding: 0 1rem 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-section-card {
-    border-radius: 12px;
-  }
-
-  .profile-section-title {
-    font-size: 0.975rem;
   }
 }

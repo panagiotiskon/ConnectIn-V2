@@ -2,15 +2,15 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 
 const SkillsSection = ({ items, onAdd, onDelete }) => (
   <div className="section-card profile-section-card">
-    <div className="profile-section-header">
-      <h2 className="profile-section-title">Skills</h2>
-      <button className="profile-add-btn" onClick={onAdd}>
+    <div className="section-header">
+      <h2 className="section-title">Skills</h2>
+      <button className="add-pill" onClick={onAdd}>
         + Add
       </button>
     </div>
-    <div className="profile-section-body">
+    <div className="section-body">
       {items.length === 0 ? (
-        <p className="profile-empty-state">No skills added yet.</p>
+        <p className="empty-state">No skills added yet.</p>
       ) : (
         items.map((skill) => (
           <div className="profile-entry" key={skill?.skillId}>
@@ -28,7 +28,7 @@ const SkillsSection = ({ items, onAdd, onDelete }) => (
               </span>
             </div>
             <button
-              className="profile-entry-delete"
+              className="entry-delete"
               onClick={() => onDelete(skill?.skillId)}
               aria-label="Delete"
             >

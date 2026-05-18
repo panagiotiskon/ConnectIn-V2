@@ -96,12 +96,12 @@ const ViewProfile = () => {
             <div className="profile-sections">
               {/* Work Experience */}
               <div className="section-card profile-section-card">
-                <div className="profile-section-header">
-                  <h2 className="profile-section-title">Work Experience</h2>
+                <div className="section-header">
+                  <h2 className="section-title">Work Experience</h2>
                 </div>
-                <div className="profile-section-body">
+                <div className="section-body">
                   {cardsContent['Work Experience'].length === 0 ? (
-                    <p className="profile-empty-state">
+                    <p className="empty-state">
                       No work experience added yet.
                     </p>
                   ) : (
@@ -139,12 +139,12 @@ const ViewProfile = () => {
 
               {/* Education */}
               <div className="section-card profile-section-card">
-                <div className="profile-section-header">
-                  <h2 className="profile-section-title">Education</h2>
+                <div className="section-header">
+                  <h2 className="section-title">Education</h2>
                 </div>
-                <div className="profile-section-body">
+                <div className="section-body">
                   {cardsContent.Education.length === 0 ? (
-                    <p className="profile-empty-state">
+                    <p className="empty-state">
                       No education added yet.
                     </p>
                   ) : (
@@ -182,12 +182,12 @@ const ViewProfile = () => {
 
               {/* Skills */}
               <div className="section-card profile-section-card">
-                <div className="profile-section-header">
-                  <h2 className="profile-section-title">Skills</h2>
+                <div className="section-header">
+                  <h2 className="section-title">Skills</h2>
                 </div>
-                <div className="profile-section-body">
+                <div className="section-body">
                   {cardsContent.Skills.length === 0 ? (
-                    <p className="profile-empty-state">No skills added yet.</p>
+                    <p className="empty-state">No skills added yet.</p>
                   ) : (
                     cardsContent.Skills.map(({ skillTitle, skillDescription, isPublic }) => (
                       <div className="profile-entry" key={skillTitle}>

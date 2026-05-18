@@ -130,13 +130,13 @@ export default function Notification() {
       <NavbarComponent />
       <div className="notifications-page">
         <div className="section-card notifications-card">
-          <div className="notifications-card-header">
-            <h2 className="notifications-card-title">Notifications</h2>
+          <div className="section-header">
+            <h2 className="section-title">Notifications</h2>
             {notifications.length > 0 && (
               <span className="notif-count-badge">{notifications.length}</span>
             )}
           </div>
-          <div className="notifications-card-body">
+          <div className="section-body">
             {isLoading ? (
               <div className="messaging-list-pane__loader">
                 <Spinner />

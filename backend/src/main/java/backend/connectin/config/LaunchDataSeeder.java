@@ -5,15 +5,18 @@ import backend.connectin.domain.Education;
 import backend.connectin.domain.Experience;
 import backend.connectin.domain.JobApplication;
 import backend.connectin.domain.JobPost;
+import backend.connectin.domain.Notification;
 import backend.connectin.domain.PersonalInfo;
 import backend.connectin.domain.Post;
 import backend.connectin.domain.Role;
 import backend.connectin.domain.Skill;
 import backend.connectin.domain.User;
 import backend.connectin.domain.enums.ConnectionStatus;
+import backend.connectin.domain.enums.NotificationType;
 import backend.connectin.domain.repository.ConnectionRepository;
 import backend.connectin.domain.repository.JobApplicationRepository;
 import backend.connectin.domain.repository.JobPostRepository;
+import backend.connectin.domain.repository.NotificationRepository;
 import backend.connectin.domain.repository.PersonalInfoRepository;
 import backend.connectin.domain.repository.PostRepository;
 import backend.connectin.domain.repository.RoleRepository;
@@ -38,13 +41,10 @@ import java.util.Optional;
  * One-shot launch fixture seeder.
  *
  * Activated only when app.seed.launch.enabled=true (env: LAUNCH_SEED).
- * Idempotent: skips if any non-admin user already exists, so leaving the flag
- * on by mistake won't duplicate data.
- *
- * Workflow:
- *   1. Run prod-wipe.sql against Railway MySQL.
- *   2. Set LAUNCH_SEED=true on Railway, redeploy. Seeder populates fixtures.
- *   3. Set LAUNCH_SEED=false (or unset), redeploy. Seeder no longer runs.
+ * Idempotent: detects a prior successful seed by checking whether the first
+ * seed user already has a PersonalInfo row, and short-circuits if so. This
+ * makes it safe to leave LAUNCH_SEED=true across deploys without duplicating
+ * posts/jobs/connections/notifications.
  */
 @Configuration
 public class LaunchDataSeeder {
@@ -67,6 +67,7 @@ public class LaunchDataSeeder {
     private final JobPostRepository jobPostRepository;
     private final JobApplicationRepository jobApplicationRepository;
     private final ConnectionRepository connectionRepository;
+    private final NotificationRepository notificationRepository;
     private final PersonalInfoRepository personalInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final boolean enabled;
@@ -79,6 +80,7 @@ public class LaunchDataSeeder {
                             JobPostRepository jobPostRepository,
                             JobApplicationRepository jobApplicationRepository,
                             ConnectionRepository connectionRepository,
+                            NotificationRepository notificationRepository,
                             PersonalInfoRepository personalInfoRepository,
                             PasswordEncoder passwordEncoder,
                             @Value("${app.seed.launch.enabled:false}") boolean enabled,
@@ -90,6 +92,7 @@ public class LaunchDataSeeder {
         this.jobPostRepository = jobPostRepository;
         this.jobApplicationRepository = jobApplicationRepository;
         this.connectionRepository = connectionRepository;
+        this.notificationRepository = notificationRepository;
         this.personalInfoRepository = personalInfoRepository;
         this.passwordEncoder = passwordEncoder;
         this.enabled = enabled;
@@ -107,6 +110,17 @@ public class LaunchDataSeeder {
 
             if (seedPassword == null || seedPassword.isBlank()) {
                 log.error("[LaunchDataSeeder] LAUNCH_SEED=true but SEED_PASSWORD is not set. Aborting seed.");
+                return;
+            }
+
+            // Global idempotency guard: if the first seed user already has personal
+            // info, the seed has run successfully before — skip everything to avoid
+            // duplicating posts, jobs, applications, connections, and notifications
+            // on subsequent deploys.
+            Optional<User> existingPrimary = userRepository.findUserByEmail(SEED_USER_EMAILS.get(0));
+            if (existingPrimary.isPresent()
+                    && personalInfoRepository.findByUserId(existingPrimary.get().getId()) != null) {
+                log.info("[LaunchDataSeeder] Seed data already present (alex has personal info). Skipping.");
                 return;
             }
 
@@ -129,9 +143,7 @@ public class LaunchDataSeeder {
             );
             users = userRepository.saveAll(users);
             log.info("[LaunchDataSeeder] Seeded {} users", users.size());
-            // temp fix
 
-            return; 
             // ---- Personal info: skills, education, experience ----
             // Profiles are tailored to each user's posts, applications, and the jobs they
             // own (e.g. Yannis owns the Connect-In requisitions, so he reads as the
@@ -274,11 +286,15 @@ public class LaunchDataSeeder {
             Long yannisId = users.get(4).getId();
 
             List<Connection> connections = new java.util.ArrayList<>();
-            // Pending requests targeting alex (mirrored).
-            addConnectionPair(connections, alexId, mariaId, ConnectionStatus.PENDING, now.minus(2, ChronoUnit.DAYS));
-            addConnectionPair(connections, alexId, nikosId, ConnectionStatus.PENDING, now.minus(2, ChronoUnit.DAYS));
-            addConnectionPair(connections, alexId, elenaId, ConnectionStatus.PENDING, now.minus(1, ChronoUnit.DAYS));
-            addConnectionPair(connections, alexId, yannisId, ConnectionStatus.PENDING, now.minus(1, ChronoUnit.DAYS));
+            // Each addConnectionPair(sender, recipient) creates two mirrored rows:
+            //   (sender, recipient, status) and (recipient, sender, status).
+            // findPendingUserConnections(userId) queries WHERE userId2 = userId, so the row
+            // (sender, recipient) is matched when the logged-in user is the recipient,
+            // and the peer shown is userId1 = sender. ✓
+            addConnectionPair(connections, mariaId, alexId, ConnectionStatus.PENDING, now.minus(2, ChronoUnit.DAYS));
+            addConnectionPair(connections, nikosId, alexId, ConnectionStatus.PENDING, now.minus(2, ChronoUnit.DAYS));
+            addConnectionPair(connections, elenaId, alexId, ConnectionStatus.PENDING, now.minus(1, ChronoUnit.DAYS));
+            addConnectionPair(connections, yannisId, alexId, ConnectionStatus.PENDING, now.minus(1, ChronoUnit.DAYS));
             // Existing accepted network among the rest (mirrored).
             addConnectionPair(connections, mariaId, nikosId, ConnectionStatus.ACCEPTED, now.minus(20, ChronoUnit.DAYS));
             addConnectionPair(connections, mariaId, elenaId, ConnectionStatus.ACCEPTED, now.minus(15, ChronoUnit.DAYS));
@@ -290,6 +306,18 @@ public class LaunchDataSeeder {
                     connections.stream().filter(c -> c.getStatus() == ConnectionStatus.PENDING).count(),
                     connections.stream().filter(c -> c.getStatus() == ConnectionStatus.ACCEPTED).count(),
                     connections.size() / 2);
+
+            // ---- Notifications for pending connections ----
+            // One notification per pending request so Alex sees them in his inbox on first login.
+            // userId = recipient (Alex), connectionUserId = sender.
+            List<Notification> pendingNotifications = List.of(
+                    buildConnectionNotification(alexId, mariaId,  now.minus(2, ChronoUnit.DAYS)),
+                    buildConnectionNotification(alexId, nikosId,  now.minus(2, ChronoUnit.DAYS)),
+                    buildConnectionNotification(alexId, elenaId,  now.minus(1, ChronoUnit.DAYS)),
+                    buildConnectionNotification(alexId, yannisId, now.minus(1, ChronoUnit.DAYS))
+            );
+            notificationRepository.saveAll(pendingNotifications);
+            log.info("[LaunchDataSeeder] Seeded {} connection notifications for alex", pendingNotifications.size());
 
             log.warn("[LaunchDataSeeder] Seed complete. Set LAUNCH_SEED=false and redeploy to deactivate.");
         };
@@ -379,11 +407,9 @@ public class LaunchDataSeeder {
         personalInfo.setSkills(skills);
         personalInfo.setEducations(new ArrayList<>(educations));
         personalInfo.setExperiences(new ArrayList<>(experiences));
-        log.info("[LaunchDataSeeder] Seeded {} users", user.getEmail());
 
         personalInfoRepository.save(personalInfo);
-        log.info("[LaunchDataSeeder] Seeded {} personal info rows", user.getEmail());
-
+        log.info("[LaunchDataSeeder] Seeded personal info for {}", user.getEmail());
     }
 
     private Education edu(String universityName, String fieldOfStudy, LocalDate startDate, LocalDate endDate) {
@@ -402,5 +428,14 @@ public class LaunchDataSeeder {
         x.setStartDate(startDate);
         x.setEndDate(endDate);
         return x;
+    }
+
+    private Notification buildConnectionNotification(Long recipientId, Long senderId, Instant when) {
+        Notification n = new Notification();
+        n.setUserId(recipientId);
+        n.setConnectionUserId(senderId);
+        n.setType(NotificationType.CONNECTION);
+        n.setCreatedAt(when);
+        return n;
     }
 }

@@ -166,10 +166,10 @@ const AddEditModal = ({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <button className="profile-modal-btn-cancel" onClick={handleModalClose}>
+        <button className="modal-btn-cancel" onClick={handleModalClose}>
           Cancel
         </button>
-        <button className="profile-modal-btn-save" onClick={handleSave}>
+        <button className="modal-btn-save" onClick={handleSave}>
           Save
         </button>
       </Modal.Footer>

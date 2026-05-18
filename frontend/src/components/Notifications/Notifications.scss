@@ -12,25 +12,6 @@
   margin-top: 1.25rem;
 }
 
-.notifications-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1.25rem 1rem;
-  border-bottom: 1px solid $divider;
-}
-
-.notifications-card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: $text-darkest;
-  margin: 0;
-}
-
-.notifications-card-body {
-  padding: 0 1.25rem 0.5rem;
-}
-
 /* ── Count badge in card header ── */
 .notif-count-badge {
   display: inline-flex;

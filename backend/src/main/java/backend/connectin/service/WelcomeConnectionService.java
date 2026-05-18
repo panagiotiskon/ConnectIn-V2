@@ -1,7 +1,10 @@
 package backend.connectin.service;
 
 import backend.connectin.config.LaunchDataSeeder;
+import backend.connectin.domain.Notification;
 import backend.connectin.domain.User;
+import backend.connectin.domain.enums.NotificationType;
+import backend.connectin.domain.repository.NotificationRepository;
 import backend.connectin.domain.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.time.Instant;
 
 /**
  * Sends pending connection requests from each launch-seed user to a newly registered user,
@@ -26,15 +31,18 @@ public class WelcomeConnectionService {
 
     private final UserRepository userRepository;
     private final ConnectionService connectionService;
+    private final NotificationRepository notificationRepository;
     private final TransactionTemplate requiresNewTx;
     private final boolean enabled;
 
     public WelcomeConnectionService(UserRepository userRepository,
                                     @Lazy ConnectionService connectionService,
+                                    NotificationRepository notificationRepository,
                                     PlatformTransactionManager txManager,
                                     @Value("${app.seed.welcome.enabled:false}") boolean enabled) {
         this.userRepository = userRepository;
         this.connectionService = connectionService;
+        this.notificationRepository = notificationRepository;
         this.requiresNewTx = new TransactionTemplate(txManager);
         this.requiresNewTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         this.enabled = enabled;
@@ -63,6 +71,13 @@ public class WelcomeConnectionService {
                         return Boolean.FALSE;
                     }
                     connectionService.requestToConnect(seedUser.getId(), newUserId);
+                    // Notify the new user that a seed user sent them a connection request.
+                    Notification notification = new Notification();
+                    notification.setUserId(newUserId);
+                    notification.setConnectionUserId(seedUser.getId());
+                    notification.setType(NotificationType.CONNECTION);
+                    notification.setCreatedAt(Instant.now());
+                    notificationRepository.save(notification);
                     return Boolean.TRUE;
                 });
                 if (Boolean.TRUE.equals(wrote)) {

@@ -81,10 +81,10 @@ const CreateJobModal = ({ isOpen, onClose, onSubmit }) => {
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <button className="jobs-modal-btn-cancel" onClick={handleClose}>
+        <button className="modal-btn-cancel" onClick={handleClose}>
           Cancel
         </button>
-        <button className="jobs-modal-btn-save" onClick={handleSubmit}>
+        <button className="modal-btn-save" onClick={handleSubmit}>
           Create
         </button>
       </Modal.Footer>

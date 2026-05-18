@@ -69,13 +69,13 @@ const SettingsModal = ({ show, onHide, onSubmit, loading, error, type }) => {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <button className="profile-modal-btn-cancel" onClick={handleClose}>
+        <button className="modal-btn-cancel" onClick={handleClose}>
           Cancel
         </button>
         <button
           type="submit"
           form="settings-form"
-          className="profile-modal-btn-save"
+          className="modal-btn-save"
           disabled={loading}
         >
           {loading ? 'Saving...' : 'Save Changes'}
