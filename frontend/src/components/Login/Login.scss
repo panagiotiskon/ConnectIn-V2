@@ -1,8 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// Mobile-first, matches the register page: the logo + form card live in
-// `.login-content`, which grows to fill the viewport so the content stays
-// vertically centered while the footer is pushed to the bottom of the page.
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -19,7 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     width: 100%;
   }
 
