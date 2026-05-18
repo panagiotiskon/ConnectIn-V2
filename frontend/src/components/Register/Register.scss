@@ -17,6 +17,10 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+
+    @media (max-width: 575px) {
+      padding-bottom: 25vh;
+    }
   }
 
   .footer {
