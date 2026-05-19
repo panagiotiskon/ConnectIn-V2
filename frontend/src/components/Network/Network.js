@@ -17,7 +17,7 @@ import './Network.scss';
 
 const Network = () => {
   const navigate = useNavigate();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, decrementNotificationCount } = useAuth();
   const currentUserId = currentUser?.id;
 
   // type: 'connection' | 'pending'
@@ -156,9 +156,10 @@ const Network = () => {
 
       if (deleteModal.type === 'pending') {
         await NotificationAPI.deleteNotification(
-          deleteModal.targetUserId,
-          currentUserId
+          currentUserId,
+          deleteModal.targetUserId
         );
+        decrementNotificationCount();
         mutatePending();
       } else {
         mutateConnections();

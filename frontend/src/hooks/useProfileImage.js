@@ -10,7 +10,7 @@ const fetchProfileImage = async (userId) => {
 };
 
 const useProfileImage = (userId) => {
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, mutate } = useSWR(
     userId ? ['profileImage', userId] : null,
     ([, id]) => fetchProfileImage(id),
     {
@@ -20,7 +20,7 @@ const useProfileImage = (userId) => {
     }
   );
 
-  return { profileImage: data ?? '/profile-pic.png', isLoading };
+  return { profileImage: data ?? '/profile-pic.png', isLoading, refreshProfileImage: mutate };
 };
 
 export default useProfileImage;

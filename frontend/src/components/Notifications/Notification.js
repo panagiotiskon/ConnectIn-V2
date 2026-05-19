@@ -5,12 +5,13 @@ import { useAuth } from '../../context/AuthContext';
 import NotificationAPI from '../../api/NotificationAPI';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import Spinner from '../common/Spinner';
+import { mutate } from 'swr';
 import './Notifications.scss';
 
 export default function Notification() {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user: currentUser, decrementNotificationCount } = useAuth();
+  const { user: currentUser, decrementNotificationCount, refreshNotificationCount } = useAuth();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -18,6 +19,7 @@ export default function Notification() {
       try {
         const data = await NotificationAPI.getNotifications(currentUser.id);
         setNotifications(data);
+        refreshNotificationCount();
       } catch (error) {
         console.error('Error fetching notifications:', error);
       } finally {
@@ -25,13 +27,15 @@ export default function Notification() {
       }
     };
     fetchNotifications();
-  }, [currentUser]);
+  }, [currentUser, refreshNotificationCount]);
 
   const handleAccept = async (userId, notificationId) => {
     setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
     decrementNotificationCount();
     try {
       await NotificationAPI.acceptNotification(currentUser.id, notificationId);
+      mutate(['connections', currentUser.id]);
+      mutate(['pending', currentUser.id]);
     } catch (error) {
       console.error('Error accepting notification:', error);
     }
@@ -42,6 +46,7 @@ export default function Notification() {
     decrementNotificationCount();
     try {
       await NotificationAPI.declineNotification(currentUser.id, notificationId);
+      mutate(['pending', currentUser.id]);
     } catch (error) {
       console.error('Error declining notification:', error);
     }

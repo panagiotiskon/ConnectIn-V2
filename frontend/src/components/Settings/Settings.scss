@@ -111,6 +111,32 @@
   }
 }
 
+/* ── Profile Picture Modal ── */
+.profile-pic-modal-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.profile-pic-modal-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $border-light;
+}
+
+.profile-pic-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.profile-pic-choose-label {
+  cursor: pointer;
+}
+
 /* ── Responsive ── */
 @media (max-width: 767px) {
   .settings-page {

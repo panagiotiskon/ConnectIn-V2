@@ -3,18 +3,22 @@ import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { Toast } from 'react-bootstrap';
 import NavbarComponent from '../common/NavBar';
 import AuthService from '../../api/AuthenticationAPI';
+import FileService from '../../api/UserFilesAPI';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import SettingsModal from './SettingsModal';
 import RecommendationsInfoModal from './RecommendationsInfoModal';
+import ProfilePictureModal from './ProfilePictureModal';
+import useProfileImage from '../../hooks/useProfileImage';
 import { SETTINGS_CARDS } from '../../utils/settingsConstants';
 import './Settings.scss';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { profileImage, refreshProfileImage } = useProfileImage(user?.id);
 
-  const [modalType, setModalType] = useState(null); // 'email' | 'password' | null
+  const [modalType, setModalType] = useState(null); // 'email' | 'password' | 'profile-picture' | null
   const [showRecoInfo, setShowRecoInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -60,6 +64,38 @@ export default function Settings() {
     }
   };
 
+  const handleProfilePictureSave = async (file) => {
+    setLoading(true);
+    setError('');
+    try {
+      await FileService.updateProfilePicture(user.id, file);
+      await refreshProfileImage();
+      setModalType(null);
+      setToastMessage('Profile picture updated successfully!');
+      setShowToast(true);
+    } catch {
+      setError('Failed to update profile picture. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProfilePictureRemove = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await FileService.deleteProfilePicture(user.id);
+      await refreshProfileImage();
+      setModalType(null);
+      setToastMessage('Profile picture removed.');
+      setShowToast(true);
+    } catch {
+      setError('Failed to remove profile picture. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <NavbarComponent />
@@ -94,10 +130,20 @@ export default function Settings() {
       </MDBContainer>
 
       <SettingsModal
-        show={modalType !== null}
+        show={modalType === 'email' || modalType === 'password'}
         type={modalType}
         onHide={handleClose}
         onSubmit={handleSubmit}
+        loading={loading}
+        error={error}
+      />
+
+      <ProfilePictureModal
+        show={modalType === 'profile-picture'}
+        onHide={handleClose}
+        currentImage={profileImage}
+        onSave={handleProfilePictureSave}
+        onRemove={handleProfilePictureRemove}
         loading={loading}
         error={error}
       />

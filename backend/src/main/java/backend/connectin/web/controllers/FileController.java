@@ -119,4 +119,22 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
+    @PutMapping("/files/user/{userId}/profile-picture")
+    public ResponseEntity<?> updateProfilePicture(@PathVariable Long userId,
+                                                   @RequestParam("file") MultipartFile file) {
+        try {
+            fileService.updateProfilePicture(file, userId);
+            return ResponseEntity.ok("Profile picture updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body("Could not update profile picture: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/files/user/{userId}/profile-picture")
+    public ResponseEntity<String> deleteProfilePicture(@PathVariable Long userId) {
+        String message = fileService.deleteProfilePicture(userId);
+        return ResponseEntity.ok(message);
+    }
+
 }

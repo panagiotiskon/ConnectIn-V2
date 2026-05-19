@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 public class FileService {
 
     private final FileRepository fileDBRepository;
+    private static final long MAX_PROFILE_PICTURE_BYTES = 10 * 1024 * 1024; // 10 MB
 
     public FileService(FileRepository fileDBRepository) {
         this.fileDBRepository = fileDBRepository;
@@ -48,6 +49,26 @@ public class FileService {
         if (fileDBRepository.existsById(id)) {
             fileDBRepository.deleteById(id);
             return "File has been successfully deleted";
+        }
+        return "File doesn't exist";
+    }
+
+    public FileDB updateProfilePicture(MultipartFile file, Long userId) throws IOException {
+        if (file.getSize() > MAX_PROFILE_PICTURE_BYTES) {
+            throw new IllegalArgumentException("Profile picture exceeds maximum allowed size");
+        }
+        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
+            throw new IllegalArgumentException("Profile picture must be an image file");
+        }
+        getProfilePicture(userId).ifPresent(existing -> fileDBRepository.deleteById(existing.getId()));
+        return store(file, true, userId);
+    }
+
+    public String deleteProfilePicture(Long userId) {
+        Optional<FileDB> existing = getProfilePicture(userId);
+        if (existing.isPresent()) {
+            fileDBRepository.deleteById(existing.get().getId());
+            return "Profile picture deleted successfully";
         }
         return "File doesn't exist";
     }

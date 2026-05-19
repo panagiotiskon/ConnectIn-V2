@@ -72,6 +72,14 @@ export const AuthProvider = ({ children }) => {
     setNotificationCount((prev) => Math.max(0, prev - 1));
   }, []);
 
+  const refreshNotificationCount = useCallback(() => {
+    if (!user) return;
+    api
+      .get(`/auth/notifications/${user.id}/count`)
+      .then((res) => setNotificationCount(res.data))
+      .catch(() => {});
+  }, [user]);
+
   const normalizeUserData = (data) => ({
     ...data,
     role: data.roles?.[0]?.name || data.role || null,
@@ -146,6 +154,7 @@ export const AuthProvider = ({ children }) => {
     refreshCurrentUser,
     notificationCount,
     decrementNotificationCount,
+    refreshNotificationCount,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,5 +1,12 @@
 export const SETTINGS_CARDS = [
   {
+    type: 'profile-picture',
+    icon: '🖼️',
+    title: 'Profile Picture',
+    desc: 'Upload or remove your profile photo.',
+    btnLabel: 'Update',
+  },
+  {
     type: 'email',
     icon: '📧',
     title: 'Email Address',
