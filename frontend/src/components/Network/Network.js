@@ -181,6 +181,7 @@ const Network = () => {
     mutatePending,
     mutateSearch,
     closeDeleteModal,
+    decrementNotificationCount,
   ]);
 
   return (
