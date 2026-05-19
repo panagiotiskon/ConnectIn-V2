@@ -1,24 +1,48 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import OptimizedImage from '../common/OptimizedImage';
 import './NetworkUserCards.scss';
 
-const ConnectedUsersCard = ({
-  user,
-  onShowProfile,
-  onMessage,
-  onDelete,
-}) => {
-  const { firstName, lastName, profileImage = '', job, companyName } = user;
+const ConnectedUsersCard = ({ user, onMessage, onDelete }) => {
+  const { id, firstName, lastName, profileImage = '', job, companyName } = user;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleOutsideClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [menuOpen]);
 
   return (
     <div className="modal-shell user-card">
-      <button
-        className="user-card__delete-btn"
-        onClick={onDelete}
-        title="Remove connection"
-      >
-        <MDBIcon fas icon="times" />
-      </button>
+      <div ref={menuRef} className="user-card__menu-wrap">
+        <button
+          className={`user-card__menu-btn${menuOpen ? ' user-card__menu-btn--open' : ''}`}
+          onClick={() => setMenuOpen((o) => !o)}
+          title="More options"
+        >
+          <MDBIcon fas icon="ellipsis-h" />
+        </button>
+
+        {menuOpen && (
+          <div className="user-card__dropdown">
+            <button
+              className="user-card__dropdown-item user-card__dropdown-item--danger"
+              onClick={() => { setMenuOpen(false); onDelete(); }}
+            >
+              <MDBIcon fas icon="user-minus" />
+              <span>Remove Connection</span>
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="user-card__banner" />
 
@@ -31,9 +55,9 @@ const ConnectedUsersCard = ({
           />
         </div>
 
-        <p className="user-card__name">
+        <Link to={`/profile/${id}`} className="user-card__name">
           {firstName} {lastName}
-        </p>
+        </Link>
 
         {job && <p className="user-card__job">{job}</p>}
         {companyName && <p className="user-card__company">{companyName}</p>}
@@ -41,13 +65,6 @@ const ConnectedUsersCard = ({
         <div className="user-card__divider" />
 
         <div className="user-card__actions">
-          <button
-            className="user-card__action-btn user-card__action-btn--primary"
-            onClick={onShowProfile}
-          >
-            <MDBIcon fas icon="user" />
-            <span>View Profile</span>
-          </button>
           <button
             className="user-card__action-btn user-card__action-btn--secondary"
             onClick={onMessage}

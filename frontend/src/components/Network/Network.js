@@ -20,17 +20,17 @@ const Network = () => {
   const { user: currentUser, decrementNotificationCount } = useAuth();
   const currentUserId = currentUser?.id;
 
-  // type: 'connection' | 'pending'
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
-    type: null,
     targetUserId: null,
     isLoading: false,
   });
 
-  // Tracks user ids whose Connect request is in flight. A Set (not a single
-  // id) so two cards can show their own spinners if the user clicks quickly.
+  // Tracks user ids whose Connect request is in flight.
   const [connectingIds, setConnectingIds] = useState(() => new Set());
+
+  // Tracks user ids whose accept/reject action is in flight.
+  const [pendingActionIds, setPendingActionIds] = useState(() => new Set());
 
   const {
     searchTerm,
@@ -62,17 +62,10 @@ const Network = () => {
           'CONNECTION',
           currentUserId
         );
-        // Await the search revalidation so the spinner stays on the card until
-        // the refetched data flips the user's connectionStatus to "PENDING".
-        // Without the await, the button resets before SWR finishes refetching,
-        // causing a brief "Connect" flash before the card swaps to Pending.
         await mutateSearch();
         mutatePending();
       } catch (error) {
-        console.error(
-          'Error sending connection request or notification:',
-          error
-        );
+        console.error('Error sending connection request or notification:', error);
       } finally {
         setConnectingIds((prev) => {
           const next = new Set(prev);
@@ -84,10 +77,6 @@ const Network = () => {
     [currentUserId, mutateSearch, mutatePending]
   );
 
-  // Resolves the per-user connection state to a single discriminator so the
-  // search and network flows can share one rendering branch.
-  // - Search results expose it on `connectionStatus` ("ACCEPTED" | "PENDING" | null)
-  // - Non-search users come from the connected/pending endpoints with `isPending`
   const resolveStatus = (user) => {
     if (isSearchActive) return user.connectionStatus ?? null;
     return user.isPending ? 'PENDING' : 'ACCEPTED';
@@ -101,47 +90,75 @@ const Network = () => {
         await MessagingAPI.createConversation(currentUserId, connectedUserId);
         navigate('/messaging', { state: { openUserId: connectedUserId } });
       } catch (error) {
-        console.error(
-          'Error creating conversation or navigating to messaging page:',
-          error
-        );
+        console.error('Error creating conversation or navigating to messaging page:', error);
       }
     },
     [currentUserId, navigate]
   );
 
-  const handleShowProfile = useCallback(
-    (userId) => {
-      navigate(`/profile/${userId}`);
+  const handleAccept = useCallback(
+    async (connectionUserId) => {
+      if (!currentUserId) return;
+
+      setPendingActionIds((prev) => {
+        const next = new Set(prev);
+        next.add(connectionUserId);
+        return next;
+      });
+      try {
+        await ConnectionAPI.acceptConnection(currentUserId, connectionUserId);
+        await NotificationAPI.deleteNotification(currentUserId, connectionUserId);
+        decrementNotificationCount();
+        mutatePending();
+        mutateConnections();
+        mutateSearch();
+      } catch (error) {
+        console.error('Error accepting connection:', error);
+      } finally {
+        setPendingActionIds((prev) => {
+          const next = new Set(prev);
+          next.delete(connectionUserId);
+          return next;
+        });
+      }
     },
-    [navigate]
+    [currentUserId, mutatePending, mutateConnections, mutateSearch, decrementNotificationCount]
+  );
+
+  const handleReject = useCallback(
+    async (connectionUserId) => {
+      if (!currentUserId) return;
+
+      setPendingActionIds((prev) => {
+        const next = new Set(prev);
+        next.add(connectionUserId);
+        return next;
+      });
+      try {
+        await ConnectionAPI.deleteConnection(currentUserId, connectionUserId);
+        await NotificationAPI.deleteNotification(currentUserId, connectionUserId);
+        decrementNotificationCount();
+        mutatePending();
+        mutateSearch();
+      } catch (error) {
+        console.error('Error rejecting connection:', error);
+      } finally {
+        setPendingActionIds((prev) => {
+          const next = new Set(prev);
+          next.delete(connectionUserId);
+          return next;
+        });
+      }
+    },
+    [currentUserId, mutatePending, mutateSearch, decrementNotificationCount]
   );
 
   const openDeleteModal = useCallback((connectionUserId) => {
-    setDeleteModal({
-      isOpen: true,
-      type: 'connection',
-      targetUserId: connectionUserId,
-      isLoading: false,
-    });
-  }, []);
-
-  const openPendingDeleteModal = useCallback((connectionUserId) => {
-    setDeleteModal({
-      isOpen: true,
-      type: 'pending',
-      targetUserId: connectionUserId,
-      isLoading: false,
-    });
+    setDeleteModal({ isOpen: true, targetUserId: connectionUserId, isLoading: false });
   }, []);
 
   const closeDeleteModal = useCallback(() => {
-    setDeleteModal({
-      isOpen: false,
-      type: null,
-      targetUserId: null,
-      isLoading: false,
-    });
+    setDeleteModal({ isOpen: false, targetUserId: null, isLoading: false });
   }, []);
 
   const confirmDelete = useCallback(async () => {
@@ -149,40 +166,15 @@ const Network = () => {
 
     setDeleteModal((prev) => ({ ...prev, isLoading: true }));
     try {
-      await ConnectionAPI.deleteConnection(
-        currentUserId,
-        deleteModal.targetUserId
-      );
-
-      if (deleteModal.type === 'pending') {
-        await NotificationAPI.deleteNotification(
-          currentUserId,
-          deleteModal.targetUserId
-        );
-        decrementNotificationCount();
-        mutatePending();
-      } else {
-        mutateConnections();
-      }
-      // Search results embed connection state, so they must also refetch when
-      // the user cancels a request or removes a connection from search mode.
+      await ConnectionAPI.deleteConnection(currentUserId, deleteModal.targetUserId);
+      mutateConnections();
       mutateSearch();
-
       closeDeleteModal();
     } catch (error) {
       console.error('Error deleting connection:', error);
       setDeleteModal((prev) => ({ ...prev, isLoading: false }));
     }
-  }, [
-    currentUserId,
-    deleteModal.targetUserId,
-    deleteModal.type,
-    mutateConnections,
-    mutatePending,
-    mutateSearch,
-    closeDeleteModal,
-    decrementNotificationCount,
-  ]);
+  }, [currentUserId, deleteModal.targetUserId, mutateConnections, mutateSearch, closeDeleteModal]);
 
   return (
     <div>
@@ -225,21 +217,20 @@ const Network = () => {
                     <ConnectedUsersCard
                       user={cardUser}
                       onMessage={() => handleMessage(user.userId)}
-                      onShowProfile={() => handleShowProfile(user.userId)}
                       onDelete={() => openDeleteModal(user.userId)}
                     />
                   ) : status === 'PENDING' ? (
                     <PendingUserCard
                       user={cardUser}
-                      onShowProfile={() => handleShowProfile(user.userId)}
-                      onDeletePending={() => openPendingDeleteModal(user.userId)}
+                      isLoading={pendingActionIds.has(user.userId)}
+                      onAccept={() => handleAccept(user.userId)}
+                      onReject={() => handleReject(user.userId)}
                     />
                   ) : (
                     <RegisteredUsersCard
                       user={cardUser}
                       isConnecting={connectingIds.has(user.userId)}
                       onConnect={() => handleConnect(user.userId)}
-                      onShowProfile={() => handleShowProfile(user.userId)}
                     />
                   )}
                 </div>
@@ -271,16 +262,8 @@ const Network = () => {
 
       <ConfirmActionModal
         isOpen={deleteModal.isOpen}
-        title={
-          deleteModal.type === 'pending'
-            ? 'Cancel Request'
-            : 'Remove Connection'
-        }
-        message={
-          deleteModal.type === 'pending'
-            ? 'Are you sure you want to cancel this connection request?'
-            : 'Are you sure you want to remove this connection?'
-        }
+        title="Remove Connection"
+        message="Are you sure you want to remove this connection?"
         confirmText="Confirm"
         cancelText="Cancel"
         onConfirm={confirmDelete}

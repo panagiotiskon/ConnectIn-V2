@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
+import { MDBContainer } from 'mdb-react-ui-kit';
 import { Toast } from 'react-bootstrap';
 import NavbarComponent from '../common/NavBar';
 import AuthService from '../../api/AuthenticationAPI';
@@ -100,21 +100,24 @@ export default function Settings() {
     <div>
       <NavbarComponent />
       <MDBContainer fluid className="settings-page">
-        <MDBRow className="justify-content-center g-3">
-          {SETTINGS_CARDS.map(({ type, icon, title, desc, btnLabel }) => (
-            <MDBCol key={type} xs="12" sm="10" md="5" lg="4">
-              <div className="settings-card">
-                <div className="settings-card-icon-wrap">
-                  <span className="settings-card-icon" aria-hidden="true">
+        <div className="section-card settings-card">
+          <div className="section-header">
+            <h2 className="section-title">Account Settings</h2>
+          </div>
+          <div className="section-body">
+            {SETTINGS_CARDS.map(({ type, icon, title, desc, btnLabel }) => (
+              <div key={type} className="settings-item">
+                <div className="settings-item-icon-wrap">
+                  <span className="settings-item-icon" aria-hidden="true">
                     {icon}
                   </span>
                 </div>
-                <div className="settings-card-body">
-                  <h2 className="settings-card-title">{title}</h2>
-                  <p className="settings-card-desc">{desc}</p>
+                <div className="settings-item-content">
+                  <h2 className="settings-item-title">{title}</h2>
+                  <p className="settings-item-desc">{desc}</p>
                 </div>
                 <button
-                  className="settings-card-btn"
+                  className="settings-item-btn"
                   onClick={() =>
                     type === 'recommendations-info'
                       ? setShowRecoInfo(true)
@@ -124,9 +127,9 @@ export default function Settings() {
                   {btnLabel}
                 </button>
               </div>
-            </MDBCol>
-          ))}
-        </MDBRow>
+            ))}
+          </div>
+        </div>
       </MDBContainer>
 
       <SettingsModal

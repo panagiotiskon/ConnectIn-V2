@@ -53,6 +53,12 @@ public class ConnectionController {
         return userService.searchUsers(searchTerm, userId, page, size);
     }
 
+    @PutMapping("/connections/{userId}/accept")
+    public ResponseEntity<String> acceptConnection(@PathVariable Long userId, @RequestParam Long connectionUserId) {
+        connectionService.changeConnectionStatusToAccepted(userId, connectionUserId);
+        return new ResponseEntity<>("Connection accepted", HttpStatus.OK);
+    }
+
     @DeleteMapping("connections/{userId}")
     public ResponseEntity<String> deleteConnection(@PathVariable Long userId, @RequestParam Long connectionUserId) {
         connectionService.deleteConnection(userId,connectionUserId);

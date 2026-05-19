@@ -2,7 +2,7 @@
 
 /* ── Page Layout ── */
 .settings-page {
-  max-width: 1200px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
 
@@ -22,56 +22,65 @@
   text-align: center;
 }
 
-/* ── Setting Card ── */
+/* ── Settings Card ── */
 .settings-card {
-  background: #fff;
-  border: 1px solid $border-light;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
-  height: 100%;
+  overflow: hidden;
+  margin-top: 1.25rem;
 }
 
-.settings-card-icon-wrap {
+/* ── Settings Item ── */
+.settings-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid $divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.settings-item-icon-wrap {
+  flex-shrink: 0;
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 12px;
   background: $surface-tint;
+  border: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.settings-card-icon {
-  font-size: 1.25rem;
+.settings-item-icon {
+  font-size: 1.2rem;
   line-height: 1;
 }
 
-.settings-card-body {
+.settings-item-content {
   flex: 1;
+  min-width: 0;
 }
 
-.settings-card-title {
-  font-size: 1rem;
+.settings-item-title {
+  font-size: 0.925rem;
   font-weight: 700;
   color: $text-darkest;
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.25rem;
 }
 
-.settings-card-desc {
-  font-size: 0.85rem;
+.settings-item-desc {
+  font-size: 0.835rem;
   color: $text-secondary;
   margin: 0;
   line-height: 1.5;
 }
 
-.settings-card-btn {
+.settings-item-btn {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  align-self: flex-start;
   padding: 0.4rem 1.2rem;
   border-radius: 20px;
   border: none;
@@ -79,9 +88,10 @@
   background-size: 200% 200%;
   background-position: left center;
   color: #fff;
-  font-size: 0.825rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
   transition: background-position 0.4s ease;
 
   &:hover {
@@ -143,12 +153,8 @@
     padding: 1rem 0.75rem;
   }
 
-  .settings-title {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-  }
-
-  .settings-card {
-    border-radius: 12px;
+  .settings-item {
+    gap: 1rem;
+    padding: 1.1rem 0;
   }
 }

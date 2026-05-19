@@ -56,6 +56,19 @@ const requestToConnect = async (userId, connectionUserId) => {
   }
 };
 
+const acceptConnection = async (userId, connectionUserId) => {
+  try {
+    const response = await api.put(`${BASE}/connections/${userId}/accept`, null, {
+      params: { connectionUserId },
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error accepting connection:", error);
+    throw error;
+  }
+};
+
 const deleteConnection = async (userId, connectionUserId) => {
   try {
     const response = await api.delete(`${BASE}/connections/${userId}`, {
@@ -74,6 +87,7 @@ const ConnectionAPI = {
   getRegisteredUsers,
   getUserPendingConnections,
   requestToConnect,
+  acceptConnection,
   deleteConnection,
 };
 
