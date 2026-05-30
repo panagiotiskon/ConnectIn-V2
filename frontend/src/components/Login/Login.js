@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { MDBSpinner } from 'mdb-react-ui-kit';
+import { MDBSpinner, MDBIcon } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { useAuth } from '../../context/AuthContext';
 import { useForm } from 'react-hook-form';
 import Footer from '../common/Footer';
 
+
 const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: 'onSubmit' });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -24,7 +26,6 @@ const Login = () => {
 
     try {
       const response = await login(data.email, data.password);
-      setLoading(false);
       if (response.role === 'ROLE_ADMIN') {
         navigate('/admin');
       } else if (response.role === 'ROLE_USER') {
@@ -33,19 +34,13 @@ const Login = () => {
         setMessage('Unexpected user role');
       }
     } catch (error) {
-      setLoading(false);
-      let resMessage = '';
-
-      if (error.response?.status === 401) {
-        resMessage = 'Invalid email or password. Please try again.';
-      } else {
-        resMessage =
-          error.response?.data?.message ||
-          error.message ||
-          error.toString();
-      }
-
+      const resMessage =
+        error.response?.status === 401
+          ? 'Invalid email or password. Please try again.'
+          : error.response?.data?.message || error.message || error.toString();
       setMessage(resMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,15 +78,33 @@ const Login = () => {
 
             <Form.Group className="mb-3" controlId="loginPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                {...register('password', { required: 'Password is required' })}
-                isInvalid={!!errors.password}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.password?.message}
-              </Form.Control.Feedback>
+              <div className="password-input-wrapper">
+                <Form.Control
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: { value: 6, message: 'Password must be at least 6 characters' },
+                  })}
+                  isInvalid={!!errors.password}
+                  onCopy={(e) => e.preventDefault()}
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onMouseDown={() => setShowPassword(true)}
+                  onMouseUp={() => setShowPassword(false)}
+                  onMouseLeave={() => setShowPassword(false)}
+                  onTouchStart={() => setShowPassword(true)}
+                  onTouchEnd={() => setShowPassword(false)}
+                  aria-label="Hold to show password"
+                >
+                  <MDBIcon fas icon={showPassword ? 'eye-slash' : 'eye'} />
+                </button>
+              </div>
+              {errors.password && (
+                <div className="invalid-feedback d-block">{errors.password.message}</div>
+              )}
             </Form.Group>
 
             <div className="text-center">

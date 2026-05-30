@@ -16,7 +16,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    // justify-content: center;
     width: 100%;
   }
 
@@ -92,4 +91,35 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
+}
+
+.password-input-wrapper {
+  position: relative;
+
+  .form-control {
+    padding-right: 2.5rem;
+
+    &.is-invalid {
+      background-image: none;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .password-toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.65rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: $text-secondary;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: $primary;
+    }
+  }
 }
